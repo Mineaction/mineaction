@@ -43,7 +43,7 @@
 
 ```bash
 # 1. Клонировать репозиторий
-git clone https://github.com/BurjiBokhtar/mineaction.git
+git clone https://github.com/Mineaction/mineaction
 cd mineaction
 
 # 2. Установить зависимости
@@ -240,6 +240,8 @@ JWT_SECRET=your_secret_key_here_change_this
 ---
 
 *Developed with ❤️ for peace and humanitarian mine action in Tajikistan*
-#   m i n e a c t i o n  
- #   m i n e a c t i o n  
+#   m i n e a c t i o n 
+ 
+ #   m i n e a c t i o n 
+ 
  
