@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Sughd",
+    "pct": 88,
+    "area_km2": "~92 km²",
+    "sort_order": 1
+  },
+  {
+    "id": 2,
+    "name": "Khatlon",
+    "pct": 72,
+    "area_km2": "~75 km²",
+    "sort_order": 2
+  },
+  {
+    "id": 3,
+    "name": "GBAO",
+    "pct": 60,
+    "area_km2": "~62 km²",
+    "sort_order": 3
+  },
+  {
+    "id": 4,
+    "name": "RRS",
+    "pct": 38,
+    "area_km2": "~31 km²",
+    "sort_order": 4
+  },
+  {
+    "id": 5,
+    "name": "Dushanbe",
+    "pct": 12,
+    "area_km2": "~0 km²",
+    "sort_order": 5
+  }
+]

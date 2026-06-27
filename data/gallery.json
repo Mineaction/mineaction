@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title_en": "Mine Clearance Operations",
+    "title_ru": "Операции по разминированию",
+    "title_tj": "Амалиётҳои минатозакунӣ",
+    "image": "",
+    "category": "operations",
+    "sort_order": 1
+  },
+  {
+    "id": 2,
+    "title_en": "Mine Risk Education",
+    "title_ru": "Обучение минной безопасности",
+    "title_tj": "Таълими бехатарии минаҳо",
+    "image": "",
+    "category": "mre",
+    "sort_order": 2
+  },
+  {
+    "id": 3,
+    "title_en": "Victim Assistance Programme",
+    "title_ru": "Программа помощи пострадавшим",
+    "title_tj": "Барномаи кӯмак ба қурбониён",
+    "image": "",
+    "category": "victims",
+    "sort_order": 3
+  },
+  {
+    "id": 4,
+    "title_en": "Training & Capacity Building",
+    "title_ru": "Обучение и развитие потенциала",
+    "title_tj": "Омӯзиш ва рушди иқтидор",
+    "image": "",
+    "category": "training",
+    "sort_order": 4
+  },
+  {
+    "id": 5,
+    "title_en": "International Partners Visit",
+    "title_ru": "Визит международных партнёров",
+    "title_tj": "Боздиди шарикони байналмилалӣ",
+    "image": "",
+    "category": "events",
+    "sort_order": 5
+  },
+  {
+    "id": 6,
+    "title_en": "Field Survey Activities",
+    "title_ru": "Полевые обследования",
+    "title_tj": "Фаъолиятҳои баррасии майдонӣ",
+    "image": "",
+    "category": "operations",
+    "sort_order": 6
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "name": "🇺🇸 US Department of State",
+    "flag": "🇺🇸",
+    "website": "https://www.state.gov/",
+    "sort_order": 1
+  },
+  {
+    "id": 2,
+    "name": "🌍 OSCE Programme Office",
+    "flag": "🌍",
+    "website": "https://www.osce.org/tajikistan",
+    "sort_order": 2
+  },
+  {
+    "id": 3,
+    "name": "🔴 ICRC Tajikistan",
+    "flag": "🔴",
+    "website": "https://www.icrc.org/",
+    "sort_order": 3
+  },
+  {
+    "id": 4,
+    "name": "🇨🇭 FSD – Swiss Foundation",
+    "flag": "🇨🇭",
+    "website": "https://www.fsd.ch/",
+    "sort_order": 4
+  },
+  {
+    "id": 5,
+    "name": "🇳🇴 Norwegian People's Aid",
+    "flag": "🇳🇴",
+    "website": "https://www.npaid.org/",
+    "sort_order": 5
+  },
+  {
+    "id": 6,
+    "name": "🇺🇳 UNDP Tajikistan",
+    "flag": "🇺🇳",
+    "website": "https://www.tj.undp.org/",
+    "sort_order": 6
+  },
+  {
+    "id": 7,
+    "name": "🏥 Red Crescent Tajikistan",
+    "flag": "🏥",
+    "website": "https://redcrescent.tj/",
+    "sort_order": 7
+  },
+  {
+    "id": 8,
+    "name": "🛡️ HDC – Ministry of Defense",
+    "flag": "🛡️",
+    "website": "",
+    "sort_order": 8
+  },
+  {
+    "id": 9,
+    "name": "🇹🇯 Union of Sappers of TJ",
+    "flag": "🇹🇯",
+    "website": "",
+    "sort_order": 9
+  }
+]

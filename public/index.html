@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title id="page-title">TNMAC – Tajikistan National Mine Action Centre</title>
+<meta name="description" content="Tajikistan National Mine Action Centre — coordinating all humanitarian mine action since 1999."/>
+<link rel="icon" type="image/png" href="/logo.png"/>
+<link rel="apple-touch-icon" href="/logo.png"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar">
+  <a class="nav-logo" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" title="Back to top">
+    <div class="badge">
+      <img src="/logo.png" alt="TNMAC Logo" onerror="this.parentElement.innerHTML='🇹🇯'"/>
+    </div>
+    <span>TNMAC</span>
+  </a>
+  <ul class="nav-links" id="nav-links-list">
+    <li><a href="#stats"      data-i18n="nav_stats">Statistics</a></li>
+    <li><a href="#charts"     data-i18n="nav_charts">Charts</a></li>
+    <li><a href="#regions"    data-i18n="nav_regions">Regions</a></li>
+    <li><a href="#timeline"   data-i18n="nav_timeline">History</a></li>
+    <li><a href="#activities" data-i18n="nav_activities">Activities</a></li>
+    <li><a href="#news"       data-i18n="nav_news">News</a></li>
+    <li><a href="#gallery"    data-i18n="nav_gallery">Gallery</a></li>
+    <li><a href="#donors"     data-i18n="nav_donors">Partners</a></li>
+    <li><a href="#contacts"   data-i18n="nav_contacts">Contacts</a></li>
+    <li class="mobile-lang">
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+      <button class="lang-btn" data-lang="tj">ТЈ</button>
+    </li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+      <button class="lang-btn" data-lang="tj">ТЈ</button>
+    </div>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+  <div class="hero-glow hero-glow-3"></div>
+  <div class="particles" id="particles"></div>
+  <div class="hero-content">
+    <div class="hero-logo-wrap">
+      <img src="/logo.png" alt="TNMAC" class="hero-logo" onerror="this.style.display='none'"/>
+    </div>
+    <div class="hero-tag" id="hero-tag">Tajikistan · Mine Action</div>
+    <h1 class="hero-title" id="hero-title">Clearing Mines.<br/>Saving Lives.<br/>Building Peace.</h1>
+    <p class="hero-sub" id="hero-sub">Government Institution "Tajikistan National Mine Action Centre" — coordinating all humanitarian mine action since 1999 under the Ottawa Treaty.</p>
+    <div class="hero-cta">
+      <a href="#stats"      class="btn-primary" id="hero-btn1" data-i18n="hero_btn1_default">View Statistics</a>
+      <a href="#activities" class="btn-outline"  id="hero-btn2" data-i18n="hero_btn2_default">Our Work</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span data-i18n="hero_scroll">Scroll</span>
+    <div class="scroll-dot"></div>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,36 C240,72 480,0 720,36 C960,72 1200,0 1440,36 L1440,72 L0,72 Z" fill="#ffffff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ KEY STATS ═══ -->
+<section id="stats">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_key_figures">Key Figures</span>
+    <h2 data-i18n="sec_stats_title">Programme Statistics</h2>
+  </div>
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-skeleton"></div>
+    <div class="stat-skeleton"></div>
+    <div class="stat-skeleton"></div>
+    <div class="stat-skeleton"></div>
+  </div>
+</section>
+
+<!-- ═══ CHARTS ═══ -->
+<section id="charts">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_data_viz">Data Visualization</span>
+    <h2 data-i18n="sec_charts_title">Interactive Charts</h2>
+  </div>
+  <div class="charts-grid">
+    <div class="chart-card fade-up" data-delay="1">
+      <h3 data-i18n="chart1_title">📉 Mine Incidents per Year (2018–2024)</h3>
+      <div class="chart-wrap"><canvas id="chartIncidents"></canvas></div>
+    </div>
+    <div class="chart-card fade-up" data-delay="2">
+      <h3 data-i18n="chart2_title">🗺️ Land Released by Region (km²)</h3>
+      <div class="chart-wrap"><canvas id="chartLand"></canvas></div>
+    </div>
+    <div class="chart-card fade-up" data-delay="3">
+      <h3 data-i18n="chart3_title">🎓 MRE Beneficiaries by Year</h3>
+      <div class="chart-wrap"><canvas id="chartMRE"></canvas></div>
+    </div>
+    <div class="chart-card fade-up" data-delay="4">
+      <h3 data-i18n="chart4_title">💰 Funding by Donor (2024)</h3>
+      <div class="chart-wrap"><canvas id="chartDonors"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROGRESS RINGS ═══ -->
+<section id="rings-section">
+  <div class="rings-row">
+    <div class="ring-item fade-up" data-delay="1">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="45" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+        <circle cx="55" cy="55" r="45" fill="none" stroke="#c0392b" stroke-width="10"
+          stroke-dasharray="283" stroke-dashoffset="283" class="ring-progress" data-pct="78" stroke-linecap="round"/>
+      </svg>
+      <div class="ring-pct" style="color:#fff;">78%</div>
+      <div class="ring-label" style="color:rgba(255,255,255,.5);" data-i18n="ring_border">Border Clearance</div>
+    </div>
+    <div class="ring-item fade-up" data-delay="2">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="45" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+        <circle cx="55" cy="55" r="45" fill="none" stroke="#e67e22" stroke-width="10"
+          stroke-dasharray="283" stroke-dashoffset="283" class="ring-progress" data-pct="65" stroke-linecap="round"/>
+      </svg>
+      <div class="ring-pct" style="color:#fff;">65%</div>
+      <div class="ring-label" style="color:rgba(255,255,255,.5);" data-i18n="ring_survivor">Survivor Reintegration</div>
+    </div>
+    <div class="ring-item fade-up" data-delay="3">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="45" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+        <circle cx="55" cy="55" r="45" fill="none" stroke="#27ae60" stroke-width="10"
+          stroke-dasharray="283" stroke-dashoffset="283" class="ring-progress" data-pct="92" stroke-linecap="round"/>
+      </svg>
+      <div class="ring-pct" style="color:#fff;">92%</div>
+      <div class="ring-label" style="color:rgba(255,255,255,.5);" data-i18n="ring_mre">MRE Coverage</div>
+    </div>
+    <div class="ring-item fade-up" data-delay="4">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="45" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+        <circle cx="55" cy="55" r="45" fill="none" stroke="#2980b9" stroke-width="10"
+          stroke-dasharray="283" stroke-dashoffset="283" class="ring-progress" data-pct="55" stroke-linecap="round"/>
+      </svg>
+      <div class="ring-pct" style="color:#fff;">55%</div>
+      <div class="ring-label" style="color:rgba(255,255,255,.5);" data-i18n="ring_strategy">National Strategy Goal</div>
+    </div>
+    <div class="ring-item fade-up" data-delay="5">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="45" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/>
+        <circle cx="55" cy="55" r="45" fill="none" stroke="#8e44ad" stroke-width="10"
+          stroke-dasharray="283" stroke-dashoffset="283" class="ring-progress" data-pct="83" stroke-linecap="round"/>
+      </svg>
+      <div class="ring-pct" style="color:#fff;">83%</div>
+      <div class="ring-label" style="color:rgba(255,255,255,.5);" data-i18n="ring_victim">Victim Assistance</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REGIONS ═══ -->
+<section id="regions">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_geo">Geographic Distribution</span>
+    <h2 data-i18n="sec_regions_title">Mine Contamination by Region</h2>
+  </div>
+  <div class="regions-inner">
+    <div class="regions-map fade-left" id="regions-bars"></div>
+    <div class="regions-info fade-right">
+      <h3 id="regions-title">Tajikistan's Contaminated Regions</h3>
+      <p id="regions-body">Tajikistan shares borders with Afghanistan, Uzbekistan, Kyrgyzstan, and China.</p>
+      <div style="margin-top:1.5rem;" id="regions-badges">
+        <span class="info-badge" data-i18n="badge_districts">🏔️ 14 Affected Districts</span>
+        <span class="info-badge" data-i18n="badge_borders">🌍 3 Bordering Countries</span>
+        <span class="info-badge" data-i18n="badge_area">📐 ~260 km² Total</span>
+        <span class="info-badge" data-i18n="badge_regions">🏴 4 Regions</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TIMELINE ═══ -->
+<section id="timeline">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_history">History</span>
+    <h2 data-i18n="sec_timeline">Key Milestones</h2>
+  </div>
+  <div class="timeline-wrap" id="timeline-wrap"></div>
+</section>
+
+<!-- ═══ ACTIVITIES ═══ -->
+<section id="activities">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_programme">Programme Areas</span>
+    <h2 data-i18n="sec_activities">What We Do</h2>
+  </div>
+  <div class="act-grid" id="act-grid"></div>
+</section>
+
+<!-- ═══ NEWS ═══ -->
+<section id="news">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_updates">Latest Updates</span>
+    <h2 data-i18n="sec_news_title">Recent News</h2>
+  </div>
+  <div class="news-grid" id="news-grid"></div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="gallery">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_gallery_label">Photo Archive</span>
+    <h2 data-i18n="sec_gallery_title">Gallery</h2>
+  </div>
+
+  <!-- Slideshow / carousel -->
+  <div class="gallery-slideshow" id="gallery-slideshow">
+    <div class="slideshow-track" id="slideshow-track"></div>
+    <button class="slide-btn slide-prev" id="slide-prev" aria-label="Previous">&#8249;</button>
+    <button class="slide-btn slide-next" id="slide-next" aria-label="Next">&#8250;</button>
+    <div class="slide-dots" id="slide-dots"></div>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="gallery-filters fade-up" id="gallery-filters">
+    <button class="gf-btn active" data-cat="all" data-i18n="gallery_all">All</button>
+    <button class="gf-btn" data-cat="operations" data-i18n="gallery_operations">Operations</button>
+    <button class="gf-btn" data-cat="mre" data-i18n="gallery_mre">MRE</button>
+    <button class="gf-btn" data-cat="events" data-i18n="gallery_events">Events</button>
+    <button class="gf-btn" data-cat="training" data-i18n="gallery_training">Training</button>
+  </div>
+
+  <!-- Grid -->
+  <div class="gallery-grid" id="gallery-grid"></div>
+</section>
+
+<!-- ═══ DONORS ═══ -->
+<section id="donors">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_donors">Our Donors &amp; Partners</span>
+    <h2 style="color:var(--text)" data-i18n="nav_donors">Partners</h2>
+  </div>
+  <div class="donors-inner fade-up">
+    <div class="donor-logos" id="donor-logos"></div>
+  </div>
+</section>
+
+<!-- ═══ CONTACTS ═══ -->
+<section id="contacts">
+  <div class="section-label fade-up">
+    <span data-i18n="sec_contacts_label">Get In Touch</span>
+    <h2 data-i18n="sec_contacts_title">Contacts &amp; Officials</h2>
+  </div>
+  <div class="contacts-inner">
+    <!-- Info block -->
+    <div class="contacts-info fade-left">
+      <div class="contact-row" id="ci-address">
+        <div class="ci-icon">📍</div>
+        <div>
+          <div class="ci-label" data-i18n="contacts_address">Address</div>
+          <div class="ci-val" id="c-address">Ayni Street 121, 734013 Dushanbe, Tajikistan</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ci-icon">📞</div>
+        <div>
+          <div class="ci-label" data-i18n="contacts_phone">Phone</div>
+          <div class="ci-val" id="c-phone">(992 37) 227-0947, 221-6687</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ci-icon">✉️</div>
+        <div>
+          <div class="ci-label" data-i18n="contacts_email">Email</div>
+          <div class="ci-val"><a href="mailto:info@tnmac.gov.tj" id="c-email">info@tnmac.gov.tj</a></div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ci-icon">🌐</div>
+        <div>
+          <div class="ci-label">Website</div>
+          <div class="ci-val"><a href="https://mineaction.tj" target="_blank">mineaction.tj</a></div>
+        </div>
+      </div>
+    </div>
+    <!-- Officials grid -->
+    <div class="contacts-officials fade-right">
+      <h3 class="officials-heading" data-i18n="contacts_officials">Our Team</h3>
+      <div class="officials-grid" id="officials-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">
+  <img src="/logo.png" alt="TNMAC" class="footer-logo-img" onerror="this.style.display='none'"/>
+  <span>Tajikistan National Mine Action Centre</span>
+</div>
+  <div class="footer-sub" id="footer-contact">Loading...</div>
+  <div class="footer-links">
+    <a href="#activities" data-i18n="footer_about">About TNMAC</a>
+    <a href="#stats"      data-i18n="footer_land">Land Release</a>
+    <a href="#activities" data-i18n="footer_victim">Victim Assistance</a>
+    <a href="#activities" data-i18n="footer_mre">Mine Risk Education</a>
+    <a href="#gallery"    data-i18n="footer_gallery">Gallery</a>
+    <a href="#donors"     data-i18n="footer_partners">Partners</a>
+    <a href="#contacts"   data-i18n="footer_contacts">Contacts</a>
+  </div>
+  <div class="footer-copy" data-i18n="footer_copy">© 2026 Tajikistan National Mine Action Centre · All rights reserved</div>
+  <div class="footer-dev">Developed by <a class="footer-dev-name" href="https://www.instagram.com/iammirzozoda" target="_blank" rel="noopener">IMRON</a></div>
+</footer>
+
+<!-- ═══ NEWS MODAL ═══ -->
+<div id="news-modal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div class="news-date" id="modal-date"></div>
+    <h2 id="modal-title"></h2>
+    <p id="modal-body"></p>
+    <!-- External link removed — this is the primary site -->
+  </div>
+</div>
+
+<!-- ═══ GALLERY LIGHTBOX ═══ -->
+<div id="lightbox" class="lightbox-overlay" style="display:none">
+  <button class="lb-close" id="lb-close">✕</button>
+  <button class="lb-nav lb-prev" id="lb-prev">&#8249;</button>
+  <div class="lb-content">
+    <img class="lb-img" id="lb-img" src="" alt=""/>
+    <div class="lb-caption" id="lb-caption"></div>
+    <div class="lb-counter" id="lb-counter"></div>
+  </div>
+  <button class="lb-nav lb-next" id="lb-next">&#8250;</button>
+</div>
+
+<script src="/js/i18n.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

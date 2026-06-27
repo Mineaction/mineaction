@@ -1,0 +1,1442 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TNMAC Admin Dashboard</title>
+<style>
+/* ─── RESET & BASE ─── */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#111827;display:flex;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;}
+input,textarea,select{font-family:inherit;}
+
+/* ─── SIDEBAR ─── */
+.sidebar{width:256px;background:#fff;border-right:1px solid rgba(0,0,0,.08);
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;
+  box-shadow:2px 0 16px rgba(0,0,0,.05);}
+.sidebar-logo{padding:1.35rem 1.25rem;border-bottom:1px solid rgba(0,0,0,.07);
+  display:flex;align-items:center;gap:.8rem;}
+.sidebar-logo .emblem{width:42px;height:42px;background:linear-gradient(135deg,#1FAD60,#25C26E);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;
+  box-shadow:0 3px 10px rgba(37,194,110,.28);flex-shrink:0;}
+.sidebar-logo .text{font-weight:800;font-size:.95rem;color:#111827;line-height:1.2;}
+.sidebar-logo .text small{font-size:.7rem;color:#9ca3af;font-weight:400;display:block;}
+.sidebar-nav{flex:1;overflow-y:auto;padding:.5rem 0;}
+.nav-section{padding:.3rem 1.25rem;font-size:.63rem;font-weight:700;color:#d1d5db;
+  text-transform:uppercase;letter-spacing:2px;margin-top:.75rem;}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.62rem 1rem;margin:.1rem .75rem;
+  font-size:.855rem;font-weight:500;color:#6b7280;cursor:pointer;
+  transition:all .18s;border-radius:10px;text-decoration:none;}
+.nav-item:hover{background:#f0fdf4;color:#198248;}
+.nav-item.active{background:linear-gradient(135deg,#f0fdf4,#dcfce7);color:#198248;
+  font-weight:600;box-shadow:inset 0 0 0 1px rgba(37,194,110,.2);}
+.nav-item .icon{width:22px;text-align:center;font-size:1rem;}
+.sidebar-footer{padding:.75rem 1rem 1rem;border-top:1px solid rgba(0,0,0,.07);}
+/* Profile card */
+.profile-card{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:14px;
+  padding:1rem 1rem .85rem;border:1px solid rgba(37,194,110,.18);margin-bottom:.65rem;}
+.profile-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem;}
+.user-avatar{width:46px;height:46px;background:linear-gradient(135deg,#1FAD60,#25C26E);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;font-weight:800;color:#fff;flex-shrink:0;
+  box-shadow:0 3px 10px rgba(37,194,110,.3);}
+.profile-info{min-width:0;flex:1;}
+.user-name{font-size:.88rem;font-weight:700;color:#111827;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-role{font-size:.7rem;color:#198248;font-weight:600;margin-top:.1rem;}
+.profile-status{display:flex;align-items:center;gap:.4rem;font-size:.7rem;color:#6b7280;padding-top:.35rem;border-top:1px solid rgba(37,194,110,.15);}
+.online-dot{width:7px;height:7px;border-radius:50%;background:#25C26E;flex-shrink:0;
+  box-shadow:0 0 0 0 rgba(37,194,110,.4);animation:onlinePulse 2s ease-in-out infinite;}
+@keyframes onlinePulse{0%,100%{box-shadow:0 0 0 0 rgba(37,194,110,.4);}50%{box-shadow:0 0 0 5px rgba(37,194,110,0);}}
+.btn-logout{width:100%;background:#fff;border:1px solid rgba(0,0,0,.11);
+  color:#6b7280;border-radius:9px;padding:.55rem;font-size:.8rem;font-weight:500;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;}
+.btn-logout:hover{background:#fee2e2;border-color:#fca5a5;color:#dc2626;}
+
+/* ─── MAIN ─── */
+.main{margin-left:256px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.topbar{background:#fff;border-bottom:1px solid rgba(0,0,0,.08);box-shadow:0 1px 6px rgba(0,0,0,.06);padding:1rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-title{font-size:1.1rem;font-weight:700;color:#111827;}
+.topbar-actions{display:flex;gap:.75rem;}
+.btn-sm{padding:.45rem 1rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;transition:all .2s;}
+.btn-primary{background:#25C26E;color:#fff;}
+.btn-primary:hover{background:#1FAD60;}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,.15);color:#374151;}
+.btn-outline:hover{background:rgba(0,0,0,.05);color:#fff;}
+.btn-danger{background:rgba(25,130,72,.15);color:#ff6b6b;border:1px solid rgba(25,130,72,.3);}
+.btn-danger:hover{background:#198248;color:#fff;}
+.btn-success{background:#25C26E;color:#fff;}
+.btn-success:hover{background:#1FAD60;}
+
+.content{padding:2rem;flex:1;}
+
+/* ─── TABS ─── */
+.tabs{display:none;}
+.tabs.active{display:block;}
+
+/* ─── OVERVIEW CARDS ─── */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
+.ov-card{background:#ffffff;border-radius:14px;padding:1.25rem;border:1px solid rgba(0,0,0,.07);}
+.ov-card .ov-num{font-size:2.2rem;font-weight:900;color:#25C26E;}
+.ov-card .ov-label{font-size:.78rem;color:#6b7280;margin-top:.2rem;}
+.recent-list{background:#ffffff;border-radius:14px;padding:1.5rem;border:1px solid rgba(0,0,0,.07);}
+.recent-list h3{font-size:.9rem;font-weight:700;margin-bottom:1rem;color:#111827;}
+.recent-item{display:flex;align-items:center;gap:1rem;padding:.6rem 0;border-bottom:1px solid rgba(0,0,0,.05);}
+.recent-item:last-child{border:none;}
+.recent-item .ri-title{font-size:.85rem;font-weight:600;flex:1;color:#111827}
+.recent-item .ri-date{font-size:.75rem;color:#9ca3af;}
+
+/* ─── TABLE ─── */
+.table-wrap{background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 8px rgba(0,0,0,.05);overflow:hidden;}
+.table-header{padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(0,0,0,.07);}
+.table-header h3{font-size:.95rem;font-weight:700;color:#111827}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;padding:.75rem 1rem;font-size:.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;color:#9ca3af;border-bottom:1px solid rgba(0,0,0,.07);}
+td{padding:.8rem 1rem;font-size:.85rem;color:#111827;border-bottom:1px solid rgba(0,0,0,.04);vertical-align:middle;}
+tr:last-child td{border:none;}
+tr:hover td{background:rgba(0,0,0,.02);}
+.badge-pub{background:rgba(37,194,110,.12);color:#198248;border-radius:20px;padding:.2rem .65rem;font-size:.72rem;font-weight:700;}
+.badge-draft{background:rgba(0,0,0,.05);color:#9ca3af;border-radius:20px;padding:.2rem .65rem;font-size:.72rem;font-weight:700;}
+.td-actions{display:flex;gap:.4rem;}
+.act-btn{padding:.3rem .65rem;border-radius:6px;font-size:.75rem;font-weight:600;border:none;transition:all .2s;}
+.act-btn.edit{background:rgba(37,194,110,.1);color:#25C26E;}
+.act-btn.edit:hover{background:#25C26E;color:#fff;}
+.act-btn.del{background:rgba(25,130,72,.12);color:#e74c3c;}
+.act-btn.del:hover{background:#198248;color:#fff;}
+
+/* ─── FORM MODAL ─── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;
+  display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);}
+.modal-box{background:#ffffff;border-radius:16px;padding:2rem;width:100%;max-width:660px;
+  max-height:90vh;overflow-y:auto;border:1px solid rgba(0,0,0,.1);position:relative;}
+.modal-box h2{font-size:1.1rem;font-weight:800;margin-bottom:1.5rem;color:#fff;}
+.modal-close-btn{position:absolute;top:1rem;right:1rem;background:rgba(0,0,0,.05);border:none;
+  color:#374151;width:30px;height:30px;border-radius:50%;font-size:.9rem;transition:background .2s;}
+.modal-close-btn:hover{background:#25C26E;color:#fff;}
+
+/* ─── FORMS ─── */
+.form-grid{display:grid;gap:1rem;}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.fg{display:flex;flex-direction:column;gap:.4rem;}
+.fg label{font-size:.78rem;font-weight:600;color:#6b7280;}
+.fg input,.fg textarea,.fg select{background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.1);
+  border-radius:8px;padding:.7rem .9rem;color:#111827;font-size:.875rem;outline:none;transition:border .2s;width:100%;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:#25C26E;}
+.fg textarea{resize:vertical;min-height:80px;}
+.fg select option{background:#0d1f36;}
+.lang-tabs{display:flex;gap:.3rem;margin-bottom:.75rem;}
+.lang-tab{padding:.25rem .6rem;border-radius:6px;font-size:.72rem;font-weight:600;border:none;
+  background:rgba(0,0,0,.05);color:#6b7280;cursor:pointer;transition:all .2s;}
+.lang-tab.active{background:#25C26E;color:#fff;}
+.lang-fields{display:none;}
+.lang-fields.active{display:contents;}
+.form-row{display:flex;gap:.75rem;margin-top:1.25rem;justify-content:flex-end;}
+
+/* ─── COLOR INPUT ─── */
+.color-row{display:flex;align-items:center;gap:.75rem;}
+.color-row input[type=color]{width:48px;height:36px;border:none;background:none;border-radius:8px;cursor:pointer;padding:0;}
+
+/* ─── SETTINGS ─── */
+.settings-grid{display:grid;gap:1.5rem;max-width:800px;}
+.settings-section{background:#ffffff;border-radius:14px;padding:1.5rem;border:1px solid rgba(0,0,0,.07);}
+.settings-section h3{font-size:.9rem;font-weight:700;margin-bottom:1.25rem;color:#374151;
+  padding-bottom:.75rem;border-bottom:1px solid rgba(0,0,0,.07);}
+.settings-row{display:flex;align-items:center;gap:1rem;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.settings-row:last-child{border:none;}
+.settings-row label{font-size:.82rem;font-weight:600;color:#6b7280;width:180px;flex-shrink:0;}
+.settings-row input,.settings-row textarea,.settings-row select{
+  flex:1;background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.1);
+  border-radius:8px;padding:.55rem .8rem;color:#111827;font-size:.85rem;outline:none;transition:border .2s;}
+.settings-row input:focus,.settings-row textarea:focus{border-color:#25C26E;}
+.settings-row textarea{min-height:60px;resize:vertical;}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:2rem;right:2rem;background:#25C26E;color:#fff;
+  padding:.85rem 1.5rem;border-radius:12px;font-size:.875rem;font-weight:600;
+  z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;pointer-events:none;}
+.toast.show{transform:none;opacity:1;}
+.toast.err{background:#198248;}
+
+/* ─── LOADING ─── */
+.loading{text-align:center;padding:3rem;color:#9ca3af;font-size:.9rem;}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);transition:transform .3s;}
+  .sidebar.open{transform:none;}
+  .main{margin-left:0;}
+  .form-grid-2{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="emblem">🇹🇯</div>
+    <div class="text">TNMAC<small>Admin Panel</small></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" data-tab="overview"><span class="icon">📊</span> Dashboard</div>
+    <div class="nav-section">Content</div>
+    <div class="nav-item" data-tab="news"><span class="icon">📰</span> News</div>
+    <div class="nav-item" data-tab="activities"><span class="icon">🗺️</span> Activities</div>
+    <div class="nav-item" data-tab="timeline"><span class="icon">📅</span> Timeline</div>
+    <div class="nav-item" data-tab="stats"><span class="icon">📈</span> Statistics</div>
+    <div class="nav-item" data-tab="regions"><span class="icon">🏔️</span> Regions</div>
+    <div class="nav-item" data-tab="donors"><span class="icon">🤝</span> Donors</div>
+    <div class="nav-item" data-tab="gallery"><span class="icon">🖼️</span> Gallery</div>
+    <div class="nav-item" data-tab="contacts"><span class="icon">👥</span> Officials</div>
+    <div class="nav-section">Config</div>
+    <div class="nav-item" data-tab="users"><span class="icon">👤</span> Users</div>
+    <div class="nav-item" data-tab="settings"><span class="icon">⚙️</span> Site Settings</div>
+    <div class="nav-item" data-tab="account"><span class="icon">🔒</span> Account</div>
+    <a class="nav-item" href="/" target="_blank"><span class="icon">🌐</span> View Site</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="profile-card">
+      <div class="profile-top">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div class="profile-info">
+          <div class="user-name" id="user-name">Admin</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+      <div class="profile-status">
+        <span class="online-dot"></span>
+        <span>Active session</span>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="logout()">🚪 Sign Out</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button onclick="document.getElementById('sidebar').classList.toggle('open')"
+        style="background:none;border:none;color:#fff;font-size:1.3rem;display:none" id="menu-toggle">☰</button>
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+    </div>
+    <div class="topbar-actions">
+      <a href="/" target="_blank" class="btn-sm btn-outline">🌐 View Site</a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="tabs active" id="tab-overview">
+      <div class="overview-grid" id="ov-grid">
+        <div class="ov-card"><div class="ov-num" id="ov-news">—</div><div class="ov-label">Published News</div></div>
+        <div class="ov-card"><div class="ov-num" id="ov-activities">—</div><div class="ov-label">Activities</div></div>
+        <div class="ov-card"><div class="ov-num" id="ov-donors">—</div><div class="ov-label">Donor Partners</div></div>
+        <div class="ov-card"><div class="ov-num" id="ov-timeline">—</div><div class="ov-label">Timeline Events</div></div>
+      </div>
+      <div class="recent-list">
+        <h3>Recent News</h3>
+        <div id="recent-news"></div>
+      </div>
+    </div>
+
+    <!-- ── NEWS ── -->
+    <div class="tabs" id="tab-news">
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>News Articles</h3>
+          <button class="btn-sm btn-primary" onclick="openNewsModal()">+ Add News</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Title</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="news-tbody"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ACTIVITIES ── -->
+    <div class="tabs" id="tab-activities">
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>Programme Activities</h3>
+          <button class="btn-sm btn-primary" onclick="openActModal()">+ Add Activity</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Icon</th><th>Title</th><th>Tag</th><th>Actions</th></tr></thead>
+            <tbody id="act-tbody"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TIMELINE ── -->
+    <div class="tabs" id="tab-timeline">
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>Timeline Events</h3>
+          <button class="btn-sm btn-primary" onclick="openTlModal()">+ Add Event</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Year</th><th>Title</th><th>Actions</th></tr></thead>
+            <tbody id="tl-tbody"><tr><td colspan="3" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STATS ── -->
+    <div class="tabs" id="tab-stats">
+      <div class="table-wrap">
+        <div class="table-header"><h3>Statistics Cards</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Icon</th><th>Value</th><th>Label (EN)</th><th>Badge</th><th>Color</th><th>Actions</th></tr></thead>
+            <tbody id="stats-tbody"><tr><td colspan="6" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── REGIONS ── -->
+    <div class="tabs" id="tab-regions">
+      <div class="table-wrap">
+        <div class="table-header"><h3>Mine-Affected Regions</h3></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Region</th><th>Percentage</th><th>Area (km²)</th><th>Actions</th></tr></thead>
+            <tbody id="reg-tbody"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DONORS ── -->
+    <div class="tabs" id="tab-donors">
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>Donor & Partner Organisations</h3>
+          <button class="btn-sm btn-primary" onclick="openDonorModal()">+ Add Donor</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Name</th><th>Website</th><th>Order</th><th>Actions</th></tr></thead>
+            <tbody id="donors-tbody"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── GALLERY ── -->
+    <div class="tabs" id="tab-gallery">
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>Photo Gallery</h3>
+          <button class="btn-sm btn-primary" onclick="openGalleryModal()">+ Add Photo</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Preview</th><th>Title (EN)</th><th>Category</th><th>Order</th><th>Actions</th></tr></thead>
+            <tbody id="gallery-tbody"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTACTS ── -->
+    <div class="tabs" id="tab-contacts">
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>Officials &amp; Staff</h3>
+          <button class="btn-sm btn-primary" onclick="openContactModal()">+ Add Official</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Photo</th><th>Name</th><th>Title (EN)</th><th>Email</th><th>Actions</th></tr></thead>
+            <tbody id="contacts-tbody"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div class="tabs" id="tab-settings">
+      <div class="settings-grid">
+        <div class="settings-section">
+          <h3>🌐 Hero Section</h3>
+          <div class="lang-tabs" style="margin-bottom:1rem;">
+            <button class="lang-tab active" onclick="switchSettingsLang(this,'hero','en')">🇬🇧 English</button>
+            <button class="lang-tab" onclick="switchSettingsLang(this,'hero','ru')">🇷🇺 Русский</button>
+            <button class="lang-tab" onclick="switchSettingsLang(this,'hero','tj')">🇹🇯 Тоҷикӣ</button>
+          </div>
+          <div id="settings-hero-en" class="settings-lang-block"></div>
+          <div id="settings-hero-ru" class="settings-lang-block" style="display:none"></div>
+          <div id="settings-hero-tj" class="settings-lang-block" style="display:none"></div>
+        </div>
+        <div class="settings-section">
+          <h3>📞 Contact Information</h3>
+          <div id="settings-contact"></div>
+        </div>
+        <div class="settings-section">
+          <h3>🎨 Colors</h3>
+          <div id="settings-colors"></div>
+        </div>
+        <div class="settings-section">
+          <h3>🗺️ Regions Text</h3>
+          <div class="lang-tabs" style="margin-bottom:1rem;">
+            <button class="lang-tab active" onclick="switchSettingsLang(this,'regions','en')">🇬🇧 English</button>
+            <button class="lang-tab" onclick="switchSettingsLang(this,'regions','ru')">🇷🇺 Русский</button>
+            <button class="lang-tab" onclick="switchSettingsLang(this,'regions','tj')">🇹🇯 Тоҷикӣ</button>
+          </div>
+          <div id="settings-regions-en" class="settings-lang-block"></div>
+          <div id="settings-regions-ru" class="settings-lang-block" style="display:none"></div>
+          <div id="settings-regions-tj" class="settings-lang-block" style="display:none"></div>
+        </div>
+        <div style="text-align:right">
+          <button class="btn-sm btn-success" onclick="saveSettings()">💾 Save All Settings</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── USERS ── -->
+    <div class="tabs" id="tab-users">
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>👤 User Accounts</h3>
+          <button class="btn-sm btn-primary" onclick="openUserModal()">+ Add User</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>ID</th><th>Username</th><th>Role</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody id="users-tbody"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem;padding:1.25rem;background:#f0fdf4;border:1px solid rgba(37,194,110,.2);border-radius:12px;font-size:.85rem;color:#374151;line-height:1.7;">
+        <strong style="color:#198248">Roles:</strong><br/>
+        🔴 <strong>superadmin</strong> — full access to all sections<br/>
+        🟡 <strong>editor</strong> — can add/edit news, gallery, officials, activities
+      </div>
+    </div>
+    <!-- ── ACCOUNT ── -->
+    <div class="tabs" id="tab-account">
+      <div class="settings-section" style="max-width:500px;">
+        <h3>🔒 Change Password</h3>
+        <div class="form-grid" style="margin-top:.5rem;">
+          <div class="fg"><label>Current Password</label><input type="password" id="cur-pass" placeholder="Current password"/></div>
+          <div class="fg"><label>New Password</label><input type="password" id="new-pass" placeholder="New password (min 8 chars)"/></div>
+          <div class="fg"><label>Confirm New Password</label><input type="password" id="con-pass" placeholder="Repeat new password"/></div>
+          <button class="btn-sm btn-primary" style="width:fit-content" onclick="changePassword()">Update Password</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<!-- ── MODALS ── -->
+<div id="modal-container"></div>
+
+<script>
+/* ════════════════════════════════════════
+   TNMAC Admin Dashboard JS
+════════════════════════════════════════ */
+const TOKEN = localStorage.getItem('tnmac_token');
+if(!TOKEN) window.location.href='/admin/';
+
+const username = localStorage.getItem('tnmac_user')||'Admin';
+document.getElementById('user-name').textContent = username;
+document.getElementById('user-avatar').textContent = username[0].toUpperCase();
+
+// ── Auth helper ───────────────────────────────────────────
+async function api(path, opts={}){
+  const r = await fetch(path, {
+    ...opts,
+    headers: { 'Authorization':'Bearer '+TOKEN, 'Content-Type':'application/json', ...opts.headers }
+  });
+  if(r.status===401){ logout(); throw new Error('Session expired'); }
+  return r;
+}
+async function apiJSON(path, opts={}){
+  const r = await api(path, opts);
+  return r.json();
+}
+
+function logout(){
+  localStorage.removeItem('tnmac_token');
+  localStorage.removeItem('tnmac_user');
+  window.location.href='/admin/';
+}
+
+// ── Toast ─────────────────────────────────────────────────
+function toast(msg, isErr=false){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(isErr?' err':'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ── Tabs ──────────────────────────────────────────────────
+
+// ── Users ──────────────────────────────────────────────
+async function loadUsersTable() {
+  try {
+    const users = await apiJSON('/api/admin/users');
+    document.getElementById('users-tbody').innerHTML = users.map(u => `
+      <tr>
+        <td style="color:#9ca3af">#${u.id}</td>
+        <td><strong>${esc(u.username)}</strong></td>
+        <td><span class="badge-${u.role==='superadmin'?'pub':'draft'}">${u.role}</span></td>
+        <td style="color:#9ca3af">${u.created_at?new Date(u.created_at).toLocaleDateString():'-'}</td>
+        <td><div class="td-actions">
+          <button class="act-btn edit" onclick="openUserModal(${u.id})">✏️ Edit</button>
+          <button class="act-btn del" onclick="deleteUser(${u.id})">🗑️</button>
+        </div></td>
+      </tr>`).join('');
+  } catch(e){ toast('Only superadmin can manage users','err'); }
+}
+
+function openUserModal(id=null){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`
+  <div class="modal-overlay" id="user-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('user-modal')">✕</button>
+      <h2>${id?'✏️ Edit User':'➕ Add User'}</h2>
+      <div class="form-grid">
+        <div class="fg"><label>Username *</label><input id="u-username" placeholder="e.g. editor1"/></div>
+        <div class="fg"><label>${id?'New Password (leave empty to keep)':'Password *'}</label>
+          <input type="password" id="u-password" placeholder="Min 6 characters"/></div>
+        <div class="fg"><label>Role</label>
+          <select id="u-role">
+            <option value="editor">🟡 editor — news & content only</option>
+            <option value="superadmin">🔴 superadmin — full access</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('user-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveUser(${id||'null'})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  if(id) apiJSON('/api/admin/users').then(users=>{
+    const u=users.find(x=>x.id===id); if(!u) return;
+    document.getElementById('u-username').value=u.username;
+    document.getElementById('u-role').value=u.role;
+  });
+}
+
+async function saveUser(id){
+  const username=document.getElementById('u-username').value.trim();
+  const password=document.getElementById('u-password').value;
+  const role=document.getElementById('u-role').value;
+  if(!username||(id==='null'&&!password)){toast('Fill required fields','err');return;}
+  const body={username,role};
+  if(password) body.password=password;
+  const r=await fetch(id&&id!=='null'?`/api/admin/users/${id}`:'/api/admin/users',{
+    method:id&&id!=='null'?'PUT':'POST',
+    headers:{'Authorization':'Bearer '+TOKEN,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  const data=await r.json();
+  if(!r.ok){toast(data.error||'Error','err');return;}
+  toast(id&&id!=='null'?'User updated!':'User created!');
+  closeModal('user-modal'); loadUsersTable();
+}
+
+async function deleteUser(id){
+  if(!confirm2('Delete this user?')) return;
+  const r=await api(`/api/admin/users/${id}`,{method:'DELETE'});
+  if(r.ok) toast('User deleted');
+  else toast((await r.json()).error||'Error','err');
+  loadUsersTable();
+}
+const TITLES = { overview:'Dashboard', news:'News', activities:'Activities',
+  timeline:'Timeline', stats:'Statistics', regions:'Regions',
+  donors:'Donors', gallery:'Gallery', contacts:'Officials',
+  users:'Users', settings:'Site Settings', account:'Account' };
+
+document.querySelectorAll('.nav-item[data-tab]').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    item.classList.add('active');
+    document.querySelectorAll('.tabs').forEach(t=>t.classList.remove('active'));
+    const tab = item.dataset.tab;
+    document.getElementById('tab-'+tab)?.classList.add('active');
+    document.getElementById('topbar-title').textContent = TITLES[tab]||tab;
+    loadTab(tab);
+  });
+});
+
+function loadTab(tab){
+  switch(tab){
+    case 'overview': loadOverview(); break;
+    case 'news': loadNewsTable(); break;
+    case 'activities': loadActTable(); break;
+    case 'timeline': loadTlTable(); break;
+    case 'stats': loadStatsTable(); break;
+    case 'regions': loadRegTable(); break;
+    case 'donors': loadDonorsTable(); break;
+    case 'gallery': loadGalleryTable(); break;
+    case 'contacts': loadContactsTable(); break;
+    case 'settings': loadSettings(); break;
+  }
+}
+
+// ── Confirm helper ────────────────────────────────────────
+function confirm2(msg){ return window.confirm(msg); }
+
+// ── Escape HTML ───────────────────────────────────────────
+function esc(s){ const d=document.createElement('div');d.textContent=s||'';return d.innerHTML; }
+
+// ════════════════════════════════════════
+//  OVERVIEW
+// ════════════════════════════════════════
+async function loadOverview(){
+  try {
+    const d = await apiJSON('/api/admin/dashboard');
+    document.getElementById('ov-news').textContent = d.news_published;
+    document.getElementById('ov-activities').textContent = d.activities_total;
+    document.getElementById('ov-donors').textContent = d.donors_total;
+    document.getElementById('ov-timeline').textContent = d.timeline_total;
+    document.getElementById('recent-news').innerHTML = d.latest_news.map(n=>`
+      <div class="recent-item">
+        <div class="ri-title">${esc(n.title_en)}</div>
+        <div class="ri-date">${new Date(n.published_at).toLocaleDateString()}</div>
+      </div>`).join('');
+  } catch(e){ toast('Failed to load overview','err'); }
+}
+
+// ════════════════════════════════════════
+//  NEWS
+// ════════════════════════════════════════
+async function loadNewsTable(){
+  try {
+    const rows = await apiJSON('/api/admin/news');
+    document.getElementById('news-tbody').innerHTML = rows.length
+      ? rows.map(n=>`
+          <tr>
+            <td><strong>${esc(n.title_en)}</strong>${n.title_ru?`<br/><small style="color:#9ca3af">${esc(n.title_ru)}</small>`:''}</td>
+            <td>${new Date(n.published_at).toLocaleDateString()}</td>
+            <td><span class="${n.is_published?'badge-pub':'badge-draft'}">${n.is_published?'Published':'Draft'}</span></td>
+            <td><div class="td-actions">
+              <button class="act-btn edit" onclick="openNewsModal(${n.id})">✏️ Edit</button>
+              <button class="act-btn del" onclick="deleteNews(${n.id})">🗑️</button>
+            </div></td>
+          </tr>`).join('')
+      : '<tr><td colspan="4" class="loading">No news yet</td></tr>';
+  } catch(e){ toast('Failed to load news','err'); }
+}
+
+function openNewsModal(id=null){
+  const isEdit = id!==null;
+  const mc = document.getElementById('modal-container');
+  mc.innerHTML = `
+  <div class="modal-overlay" id="news-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('news-modal')">✕</button>
+      <h2>${isEdit?'✏️ Edit News':'➕ Add News'}</h2>
+      <div class="form-grid">
+        <div class="lang-tabs">
+          <button class="lang-tab active" onclick="switchLang(this,'news','en')">English</button>
+          <button class="lang-tab" onclick="switchLang(this,'news','ru')">Русский</button>
+          <button class="lang-tab" onclick="switchLang(this,'news','tj')">Тоҷикӣ</button>
+        </div>
+        <div data-news-lang="en" class="lang-fields active form-grid">
+          <div class="fg"><label>Title (EN) *</label><input id="n-title_en" placeholder="Title in English"/></div>
+          <div class="fg"><label>Excerpt (EN)</label><textarea id="n-excerpt_en" placeholder="Short summary..."></textarea></div>
+          <div class="fg"><label>Full Body (EN)</label><textarea id="n-body_en" style="min-height:100px" placeholder="Full article text..."></textarea></div>
+        </div>
+        <div data-news-lang="ru" class="lang-fields form-grid">
+          <div class="fg"><label>Title (RU)</label><input id="n-title_ru" placeholder="Заголовок"/></div>
+          <div class="fg"><label>Excerpt (RU)</label><textarea id="n-excerpt_ru" placeholder="Краткое описание..."></textarea></div>
+          <div class="fg"><label>Full Body (RU)</label><textarea id="n-body_ru" style="min-height:100px"></textarea></div>
+        </div>
+        <div data-news-lang="tj" class="lang-fields form-grid">
+          <div class="fg"><label>Title (TJ)</label><input id="n-title_tj" placeholder="Унвон"/></div>
+          <div class="fg"><label>Excerpt (TJ)</label><textarea id="n-excerpt_tj" placeholder="Хулосаи кӯтоҳ..."></textarea></div>
+          <div class="fg"><label>Full Body (TJ)</label><textarea id="n-body_tj" style="min-height:100px"></textarea></div>
+        </div>
+        <div class="form-grid-2">
+          <div class="fg"><label>Published Date</label><input type="date" id="n-published_at"/></div>
+          <div class="fg"><label>Status</label>
+            <select id="n-is_published"><option value="1">Published</option><option value="0">Draft</option></select>
+          </div>
+        </div>
+        <div class="fg"><label>External Link (optional)</label><input id="n-link" placeholder="https://..."/></div>
+        <div class="fg"><label>🖼️ Image</label>
+          <input type="file" id="n-image-file" accept="image/*"/>
+          <input id="n-image" placeholder="/uploads/photo.jpg" style="margin-top:.4rem"/>
+          <div id="n-img-preview" style="margin-top:.5rem;"></div>
+        </div>
+        <div class="fg"><label>📎 Attachments (PDF, DOCX, files)</label>
+          <input type="file" id="n-attach-files" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.png,.jpg"/>
+          <div id="n-attach-list" style="margin-top:.5rem;font-size:.78rem;color:#6b7280;"></div>
+        </div>
+        <div class="fg">
+          <label>📊 Poll (optional)</label>
+          <input id="n-poll-question" placeholder="Poll question (leave empty to skip)..." style="margin-bottom:.4rem"/>
+          <div id="n-poll-options">
+            <input class="poll-opt" placeholder="Option 1" style="margin-bottom:.3rem;display:block"/>
+            <input class="poll-opt" placeholder="Option 2" style="margin-bottom:.3rem;display:block"/>
+            <input class="poll-opt" placeholder="Option 3 (optional)" style="margin-bottom:.3rem;display:block"/>
+            <input class="poll-opt" placeholder="Option 4 (optional)" style="display:block"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('news-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveNews(${id})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('n-published_at').value = new Date().toISOString().slice(0,10);
+
+  if(isEdit) apiJSON(`/api/admin/news`).then(rows=>{
+    const n = rows.find(r=>r.id===id);
+    if(!n) return;
+    ['title_en','title_ru','title_tj','excerpt_en','excerpt_ru','excerpt_tj',
+     'body_en','body_ru','body_tj','link'].forEach(f=>{
+      const el = document.getElementById(`n-${f}`);
+      if(el) el.value = n[f]||'';
+    });
+    document.getElementById('n-published_at').value = n.published_at||'';
+    document.getElementById('n-is_published').value = n.is_published;
+    if(n.image){ document.getElementById('n-image').value=n.image;
+      document.getElementById('n-img-preview').innerHTML=`<img src="${esc(n.image)}" style="max-width:200px;border-radius:8px;margin-top:.5rem"/>`;
+    }
+  });
+}
+
+async function saveNews(id){
+  const fd = new FormData();
+  const fields = ['title_en','title_ru','title_tj','excerpt_en','excerpt_ru','excerpt_tj',
+    'body_en','body_ru','body_tj','link','published_at','is_published'];
+  fields.forEach(f => fd.append(f, document.getElementById('n-'+f)?.value||''));
+  // Image
+  const fileEl = document.getElementById('n-image-file');
+  if(fileEl?.files[0]) fd.append('image', fileEl.files[0]);
+  else fd.append('image', document.getElementById('n-image')?.value||'');
+  // Attachments
+  const attachEl = document.getElementById('n-attach-files');
+  if(attachEl?.files.length) {
+    Array.from(attachEl.files).forEach(f => fd.append('attachments', f));
+  }
+  // Poll
+  const pollQ = document.getElementById('n-poll-question')?.value?.trim();
+  if(pollQ){
+    const opts = Array.from(document.querySelectorAll('.poll-opt'))
+      .map(el=>el.value.trim()).filter(Boolean);
+    if(opts.length >= 2){
+      fd.append('poll', JSON.stringify({question:pollQ, options:opts.map(t=>({text:t,votes:0}))}));
+    }
+  }
+  try {
+    const r = await fetch(id ? `/api/admin/news/${id}` : '/api/admin/news', {
+      method: id?'PUT':'POST',
+      headers:{'Authorization':'Bearer '+TOKEN},
+      body: fd
+    });
+    if(!r.ok) throw new Error('Save failed');
+    toast(id?'News updated!':'News created!');
+    closeModal('news-modal');
+    loadNewsTable();
+  } catch(e){ toast(e.message,true); }
+}
+
+async function deleteNews(id){
+  if(!confirm2('Delete this news article?')) return;
+  await api(`/api/admin/news/${id}`,{method:'DELETE'});
+  toast('Deleted'); loadNewsTable();
+}
+
+// ════════════════════════════════════════
+//  ACTIVITIES
+// ════════════════════════════════════════
+async function loadActTable(){
+  const rows = await apiJSON('/api/admin/activities');
+  document.getElementById('act-tbody').innerHTML = rows.map(a=>`
+    <tr>
+      <td style="font-size:1.4rem">${esc(a.icon||'')}</td>
+      <td><strong>${esc(a.title_en)}</strong></td>
+      <td><span class="badge-pub">${esc(a.tag_en||'')}</span></td>
+      <td><div class="td-actions">
+        <button class="act-btn edit" onclick="openActModal(${a.id})">✏️ Edit</button>
+        <button class="act-btn del" onclick="deleteAct(${a.id})">🗑️</button>
+      </div></td>
+    </tr>`).join('') || '<tr><td colspan="4" class="loading">No activities</td></tr>';
+}
+
+function openActModal(id=null){
+  const mc = document.getElementById('modal-container');
+  mc.innerHTML = `
+  <div class="modal-overlay" id="act-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('act-modal')">✕</button>
+      <h2>${id?'✏️ Edit Activity':'➕ Add Activity'}</h2>
+      <div class="form-grid">
+        <div class="lang-tabs">
+          <button class="lang-tab active" onclick="switchLang(this,'act','en')">English</button>
+          <button class="lang-tab" onclick="switchLang(this,'act','ru')">Русский</button>
+          <button class="lang-tab" onclick="switchLang(this,'act','tj')">Тоҷикӣ</button>
+        </div>
+        <div data-act-lang="en" class="lang-fields active form-grid">
+          <div class="fg"><label>Title (EN) *</label><input id="a-title_en" placeholder="Activity title"/></div>
+          <div class="fg"><label>Body (EN) *</label><textarea id="a-body_en" style="min-height:100px"></textarea></div>
+          <div class="fg"><label>Tag (EN)</label><input id="a-tag_en" placeholder="Ongoing Operations"/></div>
+        </div>
+        <div data-act-lang="ru" class="lang-fields form-grid">
+          <div class="fg"><label>Title (RU)</label><input id="a-title_ru"/></div>
+          <div class="fg"><label>Body (RU)</label><textarea id="a-body_ru" style="min-height:100px"></textarea></div>
+          <div class="fg"><label>Tag (RU)</label><input id="a-tag_ru"/></div>
+        </div>
+        <div data-act-lang="tj" class="lang-fields form-grid">
+          <div class="fg"><label>Title (TJ)</label><input id="a-title_tj"/></div>
+          <div class="fg"><label>Body (TJ)</label><textarea id="a-body_tj" style="min-height:100px"></textarea></div>
+          <div class="fg"><label>Tag (TJ)</label><input id="a-tag_tj"/></div>
+        </div>
+        <div class="form-grid-2">
+          <div class="fg"><label>Icon (emoji)</label><input id="a-icon" placeholder="🗺️" maxlength="8"/></div>
+          <div class="fg"><label>Accent Color</label><div class="color-row"><input type="color" id="a-color" value="#198248"/><input id="a-color-hex" value="#198248" maxlength="7" style="flex:1"/></div></div>
+          <div class="fg"><label>Sort Order</label><input type="number" id="a-sort_order" value="0"/></div>
+        </div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('act-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveAct(${id})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('a-color').addEventListener('input', e => document.getElementById('a-color-hex').value=e.target.value);
+  document.getElementById('a-color-hex').addEventListener('input', e => document.getElementById('a-color').value=e.target.value);
+
+  if(id) apiJSON('/api/admin/activities').then(rows=>{
+    const a=rows.find(r=>r.id===id); if(!a)return;
+    ['title_en','title_ru','title_tj','body_en','body_ru','body_tj','tag_en','tag_ru','tag_tj','icon','sort_order'].forEach(f=>{
+      const el=document.getElementById('a-'+f); if(el) el.value=a[f]||'';
+    });
+    document.getElementById('a-color').value=a.color||'#198248';
+    document.getElementById('a-color-hex').value=a.color||'#198248';
+  });
+}
+
+async function saveAct(id){
+  const data={};
+  ['title_en','title_ru','title_tj','body_en','body_ru','body_tj','tag_en','tag_ru','tag_tj','icon','sort_order'].forEach(f=>{
+    data[f]=document.getElementById('a-'+f)?.value||'';
+  });
+  data.color=document.getElementById('a-color-hex').value||'#198248';
+  const r = await api(id?`/api/admin/activities/${id}`:'/api/admin/activities',{
+    method:id?'PUT':'POST', body:JSON.stringify(data)
+  });
+  if(r.ok){ toast(id?'Updated!':'Created!'); closeModal('act-modal'); loadActTable(); }
+  else toast('Save failed',true);
+}
+
+async function deleteAct(id){
+  if(!confirm2('Delete this activity?')) return;
+  await api(`/api/admin/activities/${id}`,{method:'DELETE'});
+  toast('Deleted'); loadActTable();
+}
+
+// ════════════════════════════════════════
+//  TIMELINE
+// ════════════════════════════════════════
+async function loadTlTable(){
+  const rows = await apiJSON('/api/admin/timeline');
+  document.getElementById('tl-tbody').innerHTML = rows.map(t=>`
+    <tr>
+      <td><strong style="color:#198248;font-size:1.2rem">${esc(t.year)}</strong></td>
+      <td>${esc(t.title_en)}</td>
+      <td><div class="td-actions">
+        <button class="act-btn edit" onclick="openTlModal(${t.id})">✏️ Edit</button>
+        <button class="act-btn del" onclick="deleteTl(${t.id})">🗑️</button>
+      </div></td>
+    </tr>`).join('') || '<tr><td colspan="3" class="loading">No events</td></tr>';
+}
+
+function openTlModal(id=null){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`
+  <div class="modal-overlay" id="tl-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('tl-modal')">✕</button>
+      <h2>${id?'✏️ Edit Event':'➕ Add Timeline Event'}</h2>
+      <div class="form-grid">
+        <div class="fg"><label>Year *</label><input id="tl-year" placeholder="2024" maxlength="4"/></div>
+        <div class="lang-tabs">
+          <button class="lang-tab active" onclick="switchLang(this,'tl','en')">English</button>
+          <button class="lang-tab" onclick="switchLang(this,'tl','ru')">Русский</button>
+          <button class="lang-tab" onclick="switchLang(this,'tl','tj')">Тоҷикӣ</button>
+        </div>
+        <div data-tl-lang="en" class="lang-fields active form-grid">
+          <div class="fg"><label>Title (EN) *</label><input id="tl-title_en"/></div>
+          <div class="fg"><label>Body (EN)</label><textarea id="tl-body_en" style="min-height:80px"></textarea></div>
+        </div>
+        <div data-tl-lang="ru" class="lang-fields form-grid">
+          <div class="fg"><label>Title (RU)</label><input id="tl-title_ru"/></div>
+          <div class="fg"><label>Body (RU)</label><textarea id="tl-body_ru" style="min-height:80px"></textarea></div>
+        </div>
+        <div data-tl-lang="tj" class="lang-fields form-grid">
+          <div class="fg"><label>Title (TJ)</label><input id="tl-title_tj"/></div>
+          <div class="fg"><label>Body (TJ)</label><textarea id="tl-body_tj" style="min-height:80px"></textarea></div>
+        </div>
+        <div class="fg"><label>Sort Order</label><input type="number" id="tl-sort_order" value="0"/></div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('tl-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveTl(${id})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  if(id) apiJSON('/api/admin/timeline').then(rows=>{
+    const t=rows.find(r=>r.id===id); if(!t)return;
+    ['year','title_en','title_ru','title_tj','body_en','body_ru','body_tj','sort_order'].forEach(f=>{
+      const el=document.getElementById('tl-'+f); if(el) el.value=t[f]||'';
+    });
+  });
+}
+
+async function saveTl(id){
+  const data={};
+  ['year','title_en','title_ru','title_tj','body_en','body_ru','body_tj','sort_order'].forEach(f=>{
+    data[f]=document.getElementById('tl-'+f)?.value||'';
+  });
+  const r=await api(id?`/api/admin/timeline/${id}`:'/api/admin/timeline',{method:id?'PUT':'POST',body:JSON.stringify(data)});
+  if(r.ok){toast(id?'Updated!':'Created!');closeModal('tl-modal');loadTlTable();}
+  else toast('Save failed',true);
+}
+
+async function deleteTl(id){
+  if(!confirm2('Delete this event?')) return;
+  await api(`/api/admin/timeline/${id}`,{method:'DELETE'});
+  toast('Deleted'); loadTlTable();
+}
+
+// ════════════════════════════════════════
+//  STATS
+// ════════════════════════════════════════
+async function loadStatsTable(){
+  const rows=await apiJSON('/api/admin/stats');
+  document.getElementById('stats-tbody').innerHTML=rows.map(s=>`
+    <tr>
+      <td style="font-size:1.4rem">${esc(s.icon||'')}</td>
+      <td><strong>${esc(s.value_en)}</strong></td>
+      <td>${esc(s.label_en)}</td>
+      <td>${s.badge?`<span class="${s.badge_type==='up'?'badge-pub':'badge-draft'}">${esc(s.badge)}</span>`:'—'}</td>
+      <td><span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:${esc(s.color)};vertical-align:middle"></span> ${esc(s.color)}</td>
+      <td><button class="act-btn edit" onclick="openStatModal(${s.id})">✏️ Edit</button></td>
+    </tr>`).join('');
+}
+
+function openStatModal(id){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`
+  <div class="modal-overlay" id="stat-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('stat-modal')">✕</button>
+      <h2>✏️ Edit Statistic</h2>
+      <div class="form-grid">
+        <div class="form-grid-2">
+          <div class="fg"><label>Icon (emoji)</label><input id="st-icon" maxlength="8"/></div>
+          <div class="fg"><label>Value *</label><input id="st-value_en" placeholder="316,000"/></div>
+        </div>
+        <div class="fg"><label>Label (EN) *</label><input id="st-label_en"/></div>
+        <div class="fg"><label>Label (RU)</label><input id="st-label_ru"/></div>
+        <div class="fg"><label>Label (TJ)</label><input id="st-label_tj"/></div>
+        <div class="form-grid-2">
+          <div class="fg"><label>Badge Text</label><input id="st-badge" placeholder="↑ Since 1999"/></div>
+          <div class="fg"><label>Badge Type</label>
+            <select id="st-badge_type"><option value="up">↑ Up (green)</option><option value="down">↓ Down (red)</option></select>
+          </div>
+        </div>
+        <div class="fg"><label>Color</label><div class="color-row"><input type="color" id="st-color" value="#198248"/><input id="st-color-hex" value="#198248" maxlength="7" style="flex:1"/></div></div>
+        <div class="fg"><label>Sort Order</label><input type="number" id="st-sort_order" value="0"/></div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('stat-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveStat(${id})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('st-color').addEventListener('input',e=>document.getElementById('st-color-hex').value=e.target.value);
+  document.getElementById('st-color-hex').addEventListener('input',e=>document.getElementById('st-color').value=e.target.value);
+
+  apiJSON('/api/admin/stats').then(rows=>{
+    const s=rows.find(r=>r.id===id); if(!s)return;
+    ['icon','value_en','label_en','label_ru','label_tj','badge','badge_type','sort_order'].forEach(f=>{
+      const el=document.getElementById('st-'+f); if(el) el.value=s[f]||'';
+    });
+    document.getElementById('st-color').value=s.color||'#198248';
+    document.getElementById('st-color-hex').value=s.color||'#198248';
+  });
+}
+
+async function saveStat(id){
+  const data={};
+  ['icon','value_en','label_en','label_ru','label_tj','badge','badge_type','sort_order'].forEach(f=>{
+    data[f]=document.getElementById('st-'+f)?.value||'';
+  });
+  data.color=document.getElementById('st-color-hex').value||'#198248';
+  const r=await api(`/api/admin/stats/${id}`,{method:'PUT',body:JSON.stringify(data)});
+  if(r.ok){toast('Updated!');closeModal('stat-modal');loadStatsTable();}
+  else toast('Save failed',true);
+}
+
+// ════════════════════════════════════════
+//  REGIONS
+// ════════════════════════════════════════
+async function loadRegTable(){
+  const rows=await apiJSON('/api/admin/regions');
+  document.getElementById('reg-tbody').innerHTML=rows.map(r=>`
+    <tr>
+      <td><strong>${esc(r.name)}</strong></td>
+      <td>${r.pct}%</td>
+      <td>${esc(r.area_km2||'')}</td>
+      <td><button class="act-btn edit" onclick="openRegModal(${r.id})">✏️ Edit</button></td>
+    </tr>`).join('');
+}
+
+function openRegModal(id){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`
+  <div class="modal-overlay" id="reg-modal">
+    <div class="modal-box" style="max-width:400px">
+      <button class="modal-close-btn" onclick="closeModal('reg-modal')">✕</button>
+      <h2>✏️ Edit Region</h2>
+      <div class="form-grid">
+        <div class="fg"><label>Region Name *</label><input id="rg-name"/></div>
+        <div class="fg"><label>Percentage (0-100)</label><input type="number" id="rg-pct" min="0" max="100"/></div>
+        <div class="fg"><label>Area (km²)</label><input id="rg-area_km2" placeholder="~92 km²"/></div>
+        <div class="fg"><label>Sort Order</label><input type="number" id="rg-sort_order"/></div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('reg-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveReg(${id})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  apiJSON('/api/admin/regions').then(rows=>{
+    const r=rows.find(x=>x.id===id); if(!r)return;
+    document.getElementById('rg-name').value=r.name||'';
+    document.getElementById('rg-pct').value=r.pct||0;
+    document.getElementById('rg-area_km2').value=r.area_km2||'';
+    document.getElementById('rg-sort_order').value=r.sort_order||0;
+  });
+}
+
+async function saveReg(id){
+  const data={name:document.getElementById('rg-name').value,pct:document.getElementById('rg-pct').value,
+    area_km2:document.getElementById('rg-area_km2').value,sort_order:document.getElementById('rg-sort_order').value};
+  const r=await api(`/api/admin/regions/${id}`,{method:'PUT',body:JSON.stringify(data)});
+  if(r.ok){toast('Updated!');closeModal('reg-modal');loadRegTable();}
+  else toast('Save failed',true);
+}
+
+// ════════════════════════════════════════
+//  DONORS
+// ════════════════════════════════════════
+async function loadDonorsTable(){
+  const rows=await apiJSON('/api/admin/donors');
+  document.getElementById('donors-tbody').innerHTML=rows.map(d=>`
+    <tr>
+      <td><strong>${esc(d.name)}</strong></td>
+      <td>${d.website?`<a href="${esc(d.website)}" target="_blank" style="color:#5dade2">${esc(d.website)}</a>`:'—'}</td>
+      <td>${d.sort_order}</td>
+      <td><div class="td-actions">
+        <button class="act-btn edit" onclick="openDonorModal(${d.id})">✏️ Edit</button>
+        <button class="act-btn del" onclick="deleteDonor(${d.id})">🗑️</button>
+      </div></td>
+    </tr>`).join('') || '<tr><td colspan="4" class="loading">No donors</td></tr>';
+}
+
+function openDonorModal(id=null){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`
+  <div class="modal-overlay" id="donor-modal">
+    <div class="modal-box" style="max-width:420px">
+      <button class="modal-close-btn" onclick="closeModal('donor-modal')">✕</button>
+      <h2>${id?'✏️ Edit Donor':'➕ Add Donor'}</h2>
+      <div class="form-grid">
+        <div class="fg"><label>Name *</label><input id="dn-name" placeholder="🇺🇸 US Department of State"/></div>
+        <div class="fg"><label>Flag / Icon (emoji)</label><input id="dn-flag" maxlength="4"/></div>
+        <div class="fg"><label>Website URL</label><input id="dn-website" placeholder="https://..."/></div>
+        <div class="fg"><label>Sort Order</label><input type="number" id="dn-sort_order" value="0"/></div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('donor-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveDonor(${id})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  if(id) apiJSON('/api/admin/donors').then(rows=>{
+    const d=rows.find(r=>r.id===id); if(!d)return;
+    document.getElementById('dn-name').value=d.name||'';
+    document.getElementById('dn-flag').value=d.flag||'';
+    document.getElementById('dn-website').value=d.website||'';
+    document.getElementById('dn-sort_order').value=d.sort_order||0;
+  });
+}
+
+async function saveDonor(id){
+  const data={name:document.getElementById('dn-name').value,flag:document.getElementById('dn-flag').value,
+    website:document.getElementById('dn-website').value,sort_order:document.getElementById('dn-sort_order').value};
+  const r=await api(id?`/api/admin/donors/${id}`:'/api/admin/donors',{method:id?'PUT':'POST',body:JSON.stringify(data)});
+  if(r.ok){toast(id?'Updated!':'Created!');closeModal('donor-modal');loadDonorsTable();}
+  else toast('Save failed',true);
+}
+
+async function deleteDonor(id){
+  if(!confirm2('Delete this donor?')) return;
+  await api(`/api/admin/donors/${id}`,{method:'DELETE'});
+  toast('Deleted'); loadDonorsTable();
+}
+
+// ════════════════════════════════════════
+//  GALLERY
+// ════════════════════════════════════════
+async function loadGalleryTable(){
+  const rows = await apiJSON('/api/admin/gallery');
+  document.getElementById('gallery-tbody').innerHTML = rows.length
+    ? rows.map(g=>`
+        <tr>
+          <td>${g.image?`<img src="${esc(g.image)}" style="width:60px;height:45px;object-fit:cover;border-radius:6px"/>`:
+            '<span style="color:rgba(255,255,255,.25);font-size:1.2rem">🖼️</span>'}</td>
+          <td><strong>${esc(g.title_en)}</strong></td>
+          <td><span class="badge-pub">${esc(g.category||'')}</span></td>
+          <td>${g.sort_order}</td>
+          <td><div class="td-actions">
+            <button class="act-btn edit" onclick="openGalleryModal(${g.id})">✏️ Edit</button>
+            <button class="act-btn del" onclick="deleteGallery(${g.id})">🗑️</button>
+          </div></td>
+        </tr>`).join('')
+    : '<tr><td colspan="5" class="loading">No photos yet</td></tr>';
+}
+
+function openGalleryModal(id=null){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`
+  <div class="modal-overlay" id="gal-modal">
+    <div class="modal-box" style="max-width:520px">
+      <button class="modal-close-btn" onclick="closeModal('gal-modal')">✕</button>
+      <h2>${id?'✏️ Edit Photo':'➕ Add Photo'}</h2>
+      <div class="form-grid">
+        <div class="lang-tabs">
+          <button class="lang-tab active" onclick="switchLang(this,'gl','en')">English</button>
+          <button class="lang-tab" onclick="switchLang(this,'gl','ru')">Русский</button>
+          <button class="lang-tab" onclick="switchLang(this,'gl','tj')">Тоҷикӣ</button>
+        </div>
+        <div data-gl-lang="en" class="lang-fields active form-grid">
+          <div class="fg"><label>Title (EN) *</label><input id="gl-title_en" placeholder="Photo title"/></div>
+        </div>
+        <div data-gl-lang="ru" class="lang-fields form-grid">
+          <div class="fg"><label>Title (RU)</label><input id="gl-title_ru"/></div>
+        </div>
+        <div data-gl-lang="tj" class="lang-fields form-grid">
+          <div class="fg"><label>Title (TJ)</label><input id="gl-title_tj"/></div>
+        </div>
+        <div class="form-grid-2">
+          <div class="fg"><label>Category</label>
+            <select id="gl-category">
+              <option value="operations">Operations</option>
+              <option value="mre">MRE</option>
+              <option value="events">Events</option>
+              <option value="training">Training</option>
+              <option value="general">General</option>
+            </select>
+          </div>
+          <div class="fg"><label>Sort Order</label><input type="number" id="gl-sort_order" value="0"/></div>
+        </div>
+        <div class="fg"><label>Photo *</label>
+          <input type="file" id="gl-image-file" accept="image/*" style="color:#fff"/>
+          <input id="gl-image" placeholder="/uploads/photo.jpg" style="margin-top:.4rem"/>
+          <div id="gl-img-preview" style="margin-top:.5rem"></div>
+        </div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('gal-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveGallery(${id||'null'})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  if(id) apiJSON('/api/admin/gallery').then(rows=>{
+    const g=rows.find(r=>r.id===id); if(!g)return;
+    ['title_en','title_ru','title_tj','sort_order'].forEach(f=>{
+      const el=document.getElementById('gl-'+f); if(el) el.value=g[f]||'';
+    });
+    document.getElementById('gl-category').value=g.category||'general';
+    if(g.image){document.getElementById('gl-image').value=g.image;
+      document.getElementById('gl-img-preview').innerHTML=`<img src="${esc(g.image)}" style="max-width:200px;border-radius:8px"/>`;
+    }
+  });
+}
+
+async function saveGallery(id){
+  const fd=new FormData();
+  ['title_en','title_ru','title_tj','category','sort_order'].forEach(f=>fd.append(f,document.getElementById('gl-'+f)?.value||''));
+  const fileEl=document.getElementById('gl-image-file');
+  if(fileEl?.files[0]) fd.append('image',fileEl.files[0]);
+  else fd.append('image',document.getElementById('gl-image')?.value||'');
+  const r=await fetch(id&&id!=='null'?`/api/admin/gallery/${id}`:'/api/admin/gallery',{
+    method:id&&id!=='null'?'PUT':'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd});
+  if(r.ok){toast(id&&id!=='null'?'Updated!':'Added!');closeModal('gal-modal');loadGalleryTable();}
+  else toast('Save failed',true);
+}
+
+async function deleteGallery(id){
+  if(!confirm2('Delete this photo?')) return;
+  await api(`/api/admin/gallery/${id}`,{method:'DELETE'});
+  toast('Deleted'); loadGalleryTable();
+}
+
+// ════════════════════════════════════════
+//  CONTACTS / OFFICIALS
+// ════════════════════════════════════════
+async function loadContactsTable(){
+  const rows=await apiJSON('/api/admin/contacts');
+  document.getElementById('contacts-tbody').innerHTML=rows.length
+    ?rows.map(c=>`
+      <tr>
+        <td>${c.photo?`<img src="${esc(c.photo)}" style="width:40px;height:40px;object-fit:cover;border-radius:50%;border:2px solid rgba(37,194,110,.3)"/>`:
+          `<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#198248,#25C26E);display:flex;align-items:center;justify-content:center;font-weight:800;color:#111827;font-size:.85rem">${esc(c.name.split(' ').map(w=>w[0]).join('').slice(0,2))}</div>`}</td>
+        <td><strong>${esc(c.name)}</strong></td>
+        <td>${esc(c.title_en)}</td>
+        <td>${c.email?`<a href="mailto:${esc(c.email)}" style="color:#25C26E">${esc(c.email)}</a>`:'—'}</td>
+        <td><div class="td-actions">
+          <button class="act-btn edit" onclick="openContactModal(${c.id})">✏️ Edit</button>
+          <button class="act-btn del" onclick="deleteContact(${c.id})">🗑️</button>
+        </div></td>
+      </tr>`).join('')
+    :'<tr><td colspan="5" class="loading">No officials</td></tr>';
+}
+
+function openContactModal(id=null){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`
+  <div class="modal-overlay" id="con-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('con-modal')">✕</button>
+      <h2>${id?'✏️ Edit Official':'➕ Add Official'}</h2>
+      <div class="form-grid">
+        <div class="form-grid-2"><div class="fg"><label>Full Name (RU/TJ) *</label><input id="co-name" placeholder="Иванов И.И."/></div><div class="fg"><label>Full Name (EN) — Latin</label><input id="co-name_en" placeholder="Ivanov I.I."/></div></div>
+        <div class="lang-tabs">
+          <button class="lang-tab active" onclick="switchLang(this,'co','en')">English</button>
+          <button class="lang-tab" onclick="switchLang(this,'co','ru')">Русский</button>
+          <button class="lang-tab" onclick="switchLang(this,'co','tj')">Тоҷикӣ</button>
+        </div>
+        <div data-co-lang="en" class="lang-fields active form-grid">
+          <div class="fg"><label>Title (EN) *</label><input id="co-title_en" placeholder="Director General"/></div>
+        </div>
+        <div data-co-lang="ru" class="lang-fields form-grid">
+          <div class="fg"><label>Должность (RU)</label><input id="co-title_ru"/></div>
+        </div>
+        <div data-co-lang="tj" class="lang-fields form-grid">
+          <div class="fg"><label>Вазифа (TJ)</label><input id="co-title_tj"/></div>
+        </div>
+        <div class="form-grid-2">
+          <div class="fg"><label>Phone</label><input id="co-phone" placeholder="(992 37) ..."/></div>
+          <div class="fg"><label>Email</label><input id="co-email" type="email" placeholder="name@tnmac.gov.tj"/></div>
+        </div>
+        <div class="fg"><label>Photo</label>
+          <input type="file" id="co-photo-file" accept="image/*" style="color:#fff"/>
+          <input id="co-photo" placeholder="/uploads/photo.jpg" style="margin-top:.4rem"/>
+          <div id="co-photo-preview" style="margin-top:.5rem"></div>
+        </div>
+        <div class="form-grid-2">
+          <div class="fg"><label>Hierarchy Level</label>
+            <select id="co-level">
+              <option value="1">1 — Director General</option>
+              <option value="2">2 — Deputy Director</option>
+              <option value="3">3 — Department Head</option>
+              <option value="4">4 — Staff / Other</option>
+            </select>
+          </div>
+          <div class="fg"><label>Sort Order</label><input type="number" id="co-sort_order" value="0"/></div>
+        </div>
+        <div class="fg"><label>Reports to (Parent ID, optional)</label>
+          <input type="number" id="co-parent_id" placeholder="Leave empty for top level"/>
+          <small style="color:#9ca3af;font-size:.72rem;margin-top:.2rem;display:block">Enter the ID of the supervisor (visible in officials table)</small>
+        </div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('con-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveContact(${id||'null'})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  if(id) apiJSON('/api/admin/contacts').then(rows=>{
+    const c=rows.find(r=>r.id===id); if(!c)return;
+    ['name','name_en','title_en','title_ru','title_tj','phone','email','sort_order'].forEach(f=>{
+      const el=document.getElementById('co-'+f); if(el) el.value=c[f]||'';
+    });
+    if(c.level) document.getElementById('co-level').value=c.level||'1';
+    if(c.parent_id) document.getElementById('co-parent_id').value=c.parent_id;
+    if(c.photo){document.getElementById('co-photo').value=c.photo;
+      document.getElementById('co-photo-preview').innerHTML=`<img src="${esc(c.photo)}" style="width:80px;height:100px;object-fit:cover;border-radius:10px;border:2px solid rgba(37,194,110,.35)"/>`;
+    }
+  });
+}
+
+async function saveContact(id){
+  const fd=new FormData();
+  ['name','name_en','title_en','title_ru','title_tj','phone','email','sort_order'].forEach(f=>fd.append(f,document.getElementById('co-'+f)?.value||''));
+  fd.append('level', document.getElementById('co-level')?.value||'1');
+  const pId=document.getElementById('co-parent_id')?.value; if(pId) fd.append('parent_id',pId);
+  const fileEl=document.getElementById('co-photo-file');
+  if(fileEl?.files[0]) fd.append('photo',fileEl.files[0]);
+  else fd.append('photo',document.getElementById('co-photo')?.value||'');
+  const r=await fetch(id&&id!=='null'?`/api/admin/contacts/${id}`:'/api/admin/contacts',{
+    method:id&&id!=='null'?'PUT':'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd});
+  if(r.ok){toast(id&&id!=='null'?'Updated!':'Added!');closeModal('con-modal');loadContactsTable();}
+  else toast('Save failed',true);
+}
+
+async function deleteContact(id){
+  if(!confirm2('Delete this official?')) return;
+  await api(`/api/admin/contacts/${id}`,{method:'DELETE'});
+  toast('Deleted'); loadContactsTable();
+}
+
+// ════════════════════════════════════════
+//  SETTINGS
+// ════════════════════════════════════════
+let currentSettings={};
+async function loadSettings(){
+  const rows=await apiJSON('/api/admin/settings');
+  currentSettings={};
+  rows.forEach(r=>currentSettings[r.key]=r);
+
+  // Hero — per language
+  renderSettingsBlock('settings-hero-en', ['hero_tag','hero_title','hero_sub','hero_btn1','hero_btn2','nav_badge']);
+  renderSettingsBlock('settings-hero-ru', ['hero_tag_ru','hero_title_ru','hero_sub_ru','hero_btn1_ru','hero_btn2_ru']);
+  renderSettingsBlock('settings-hero-tj', ['hero_tag_tj','hero_title_tj','hero_sub_tj','hero_btn1_tj','hero_btn2_tj']);
+
+  // Contact & Colors
+  renderSettingsBlock('settings-contact', ['address','phone','email']);
+  renderColorBlock('settings-colors', ['color_primary','color_dark','color_navy']);
+
+  // Regions — per language
+  renderSettingsBlock('settings-regions-en', ['regions_title_en','regions_body_en']);
+  renderSettingsBlock('settings-regions-ru', ['regions_title_ru','regions_body_ru']);
+  renderSettingsBlock('settings-regions-tj', ['regions_title_tj','regions_body_tj']);
+}
+
+function switchSettingsLang(btn, section, lang){
+  const parent = btn.closest('.settings-section');
+  parent.querySelectorAll('.lang-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  parent.querySelectorAll('.settings-lang-block').forEach(el=>el.style.display='none');
+  const target = document.getElementById(`settings-${section}-${lang}`);
+  if(target) target.style.display='';
+}
+
+function renderSettingsBlock(containerId, keys){
+  const el=document.getElementById(containerId);
+  el.innerHTML=keys.map(k=>{
+    const s=currentSettings[k];
+    if(!s)return'';
+    const isTA=s.type==='textarea'||s.type==='html';
+    return `<div class="settings-row">
+      <label>${esc(s.label||k)}</label>
+      ${isTA
+        ?`<textarea id="setting-${k}" rows="2">${esc(s.value)}</textarea>`
+        :`<input type="text" id="setting-${k}" value="${esc(s.value)}"/>`}
+    </div>`;
+  }).join('');
+}
+
+function renderColorBlock(containerId, keys){
+  const el=document.getElementById(containerId);
+  el.innerHTML=keys.map(k=>{
+    const s=currentSettings[k]; if(!s)return'';
+    return `<div class="settings-row">
+      <label>${esc(s.label||k)}</label>
+      <div class="color-row">
+        <input type="color" id="color-${k}" value="${esc(s.value)}"/>
+        <input type="text" id="setting-${k}" value="${esc(s.value)}" maxlength="7"/>
+      </div>
+    </div>`;
+  }).join('');
+  keys.forEach(k=>{
+    const cp=document.getElementById('color-'+k);
+    const inp=document.getElementById('setting-'+k);
+    if(cp&&inp){
+      cp.addEventListener('input',e=>inp.value=e.target.value);
+      inp.addEventListener('input',e=>{if(/^#[0-9a-f]{6}$/i.test(e.target.value))cp.value=e.target.value;});
+    }
+  });
+}
+
+async function saveSettings(){
+  const allKeys=[...Object.keys(currentSettings)];
+  const data={};
+  allKeys.forEach(k=>{
+    const el=document.getElementById('setting-'+k);
+    if(el) data[k]=el.value;
+  });
+  const r=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(data)});
+  if(r.ok) toast('Settings saved! Reload site to see changes.');
+  else toast('Save failed',true);
+}
+
+// ════════════════════════════════════════
+//  ACCOUNT
+// ════════════════════════════════════════
+async function changePassword(){
+  const cur=document.getElementById('cur-pass').value;
+  const nw=document.getElementById('new-pass').value;
+  const cn=document.getElementById('con-pass').value;
+  if(!cur||!nw){toast('Fill all fields',true);return;}
+  if(nw!==cn){toast('Passwords do not match',true);return;}
+  if(nw.length<8){toast('Min 8 characters',true);return;}
+  const r=await api('/api/auth/change-password',{method:'POST',body:JSON.stringify({current:cur,newPass:nw})});
+  if(r.ok){toast('Password changed! Please login again.');setTimeout(logout,2000);}
+  else{const d=await r.json();toast(d.error||'Failed',true);}
+}
+
+// ════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════
+function closeModal(id){
+  const m=document.getElementById(id);
+  if(m) m.remove();
+}
+
+function switchLang(btn, prefix, lang){
+  const modal=btn.closest('.modal-box');
+  modal.querySelectorAll('.lang-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  modal.querySelectorAll(`[data-${prefix}-lang]`).forEach(el=>{
+    el.classList.toggle('active', el.dataset[prefix+'Lang']===lang);
+  });
+}
+
+// Close modal on overlay click
+document.addEventListener('click', e=>{
+  if(e.target.classList.contains('modal-overlay')) e.target.remove();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') document.querySelectorAll('.modal-overlay').forEach(m=>m.remove());
+});
+
+// ── Init ──────────────────────────────────────────────────
+loadOverview();
+</script>
+</body>
+</html>

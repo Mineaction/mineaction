@@ -1,0 +1,9 @@
+node_modules/
+uploads/
+*.log
+.env
+.DS_Store
+Thumbs.db
+.claude/
+# data/users.json  ← included (hashed password only, private repo)
+tnmac.html
