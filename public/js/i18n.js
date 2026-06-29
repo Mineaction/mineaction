@@ -94,9 +94,9 @@ const TRANSLATIONS = {
     footer_copy:  '© 2026 Tajikistan National Mine Action Centre · All rights reserved',
 
     // ── Hero defaults (fallback if settings fail) ──
-    hero_tag_default:  'Tajikistan · Mine Action',
-    hero_title_default:'Clearing Mines.<br/>Saving Lives.<br/>Building Peace.',
-    hero_sub_default:  'Government Institution "Tajikistan National Mine Action Centre" — coordinating all humanitarian mine action since 1999 under the Ottawa Treaty.',
+    hero_tag_default:  'Tajikistan Humanitarian MA Program',
+    hero_title_default:'Land release from Explosive ordnance.<br/>Saving Lives.<br/>Building Peace.',
+    hero_sub_default:  'The state institution "Tajik National Mine Action Center" has been implementing humanitarian mine action activities within the framework of the Ottawa Convention since 2003.',
     hero_btn1_default: 'View Statistics',
     hero_btn2_default: 'Our Work',
   },
@@ -180,9 +180,9 @@ const TRANSLATIONS = {
     footer_contacts:'Контакты',
     footer_copy:    '© 2026 Таджикский национальный центр по разминированию · Все права защищены',
 
-    hero_tag_default:  'Таджикистан · Минное разминирование',
-    hero_title_default:'Разминируем.<br/>Спасаем жизни.<br/>Строим мир.',
-    hero_sub_default:  'Государственное учреждение "Таджикский национальный центр по разминированию" — координирует все гуманитарные операции по разминированию с 1999 года в рамках Оттавского договора.',
+    hero_tag_default:  'Программа Таджикистана по гуманитарной противоминной деятельности',
+    hero_title_default:'Высвобождение земель от боеприпасов взрывного действия.<br/>Спасаем жизни.<br/>Строим мир.',
+    hero_sub_default:  'Государственное учреждение «Национальный центр Таджикистана по минным вопросам» осуществляет деятельность в сфере гуманитарного разминирования в рамках Оттавской конвенции с 2003 года.',
     hero_btn1_default: 'Смотреть статистику',
     hero_btn2_default: 'Наша работа',
   },
@@ -266,9 +266,9 @@ const TRANSLATIONS = {
     footer_contacts:'Тамос',
     footer_copy:    '© 2026 Маркази давлатии минатозакунии Тоҷикистон · Ҳама ҳуқуқҳо ҳифз шудаанд',
 
-    hero_tag_default:  'Тоҷикистон · Минатозакунӣ',
-    hero_title_default:'Минаҳоро тоза мекунем.<br/>Ҷонҳоро наҷот медиҳем.<br/>Сулҳ месозем.',
-    hero_sub_default:  'Муассисаи давлатии "Маркази давлатии минатозакунии Тоҷикистон" — аз соли 1999 инҷониб ҳамаи амалиётҳои гуманитарии минатозакуниро дар доираи Шартномаи Оттава ҳамоҳанг мекунад.',
+    hero_tag_default:  'Барномаи башардӯстонаи зидди минаҳои Тоҷикистон',
+    hero_title_default:'Заминҳоро аз лавозимотҳои тарканда озод месозем.<br/>Ҷонҳоро наҷот медиҳем.<br/>Сулҳ месозем.',
+    hero_sub_default:  'Муассисаи давлатии "Маркази миллии Тоҷикистон оид ба масъалаҳои минаҳо" аз соли 2003 то инҷониб фаъолияти башардӯстонаи зидди минаҳоро дар доираи Конверсияи Оттава иҷро мекунад',
     hero_btn1_default: 'Дидани омор',
     hero_btn2_default: 'Кори мо',
   }
