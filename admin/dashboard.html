@@ -190,6 +190,7 @@ tr:hover td{background:rgba(0,0,0,.02);}
     <div class="nav-item" data-tab="timeline"><span class="icon">📅</span> Timeline</div>
     <div class="nav-item" data-tab="stats"><span class="icon">📈</span> Statistics</div>
     <div class="nav-item" data-tab="regions"><span class="icon">🏔️</span> Regions</div>
+    <div class="nav-item" data-tab="charts"><span class="icon">📊</span> Charts</div>
     <div class="nav-item" data-tab="donors"><span class="icon">🤝</span> Donors</div>
     <div class="nav-item" data-tab="gallery"><span class="icon">🖼️</span> Gallery</div>
     <div class="nav-item" data-tab="contacts"><span class="icon">👥</span> Officials</div>
@@ -315,6 +316,22 @@ tr:hover td{background:rgba(0,0,0,.02);}
           <table>
             <thead><tr><th>Region</th><th>Percentage</th><th>Area (km²)</th><th>Actions</th></tr></thead>
             <tbody id="reg-tbody"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CHARTS ── -->
+    <div class="tabs" id="tab-charts">
+      <div class="table-wrap">
+        <div class="table-header">
+          <h3>Interactive Charts</h3>
+          <button class="btn-sm btn-primary" onclick="openChartModal()">+ Add Chart</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Title (EN)</th><th>Type</th><th>Points</th><th>Order</th><th>Actions</th></tr></thead>
+            <tbody id="charts-tbody"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -568,7 +585,7 @@ async function deleteUser(id){
 }
 const TITLES = { overview:'Dashboard', news:'News', activities:'Activities',
   timeline:'Timeline', stats:'Statistics', regions:'Regions',
-  donors:'Donors', gallery:'Gallery', contacts:'Officials',
+  donors:'Donors', gallery:'Gallery', contacts:'Officials', charts:'Charts',
   users:'Users', settings:'Site Settings', account:'Account' };
 
 document.querySelectorAll('.nav-item[data-tab]').forEach(item=>{
@@ -594,6 +611,7 @@ function loadTab(tab){
     case 'donors': loadDonorsTable(); break;
     case 'gallery': loadGalleryTable(); break;
     case 'contacts': loadContactsTable(); break;
+    case 'charts': loadChartsTable(); break;
     case 'settings': loadSettings(); break;
   }
 }
@@ -1106,6 +1124,114 @@ async function deleteDonor(id){
   if(!confirm2('Delete this donor?')) return;
   await api(`/api/admin/donors/${id}`,{method:'DELETE'});
   toast('Deleted'); loadDonorsTable();
+}
+
+// ════════════════════════════════════════
+//  CHARTS
+// ════════════════════════════════════════
+async function loadChartsTable(){
+  const rows = await apiJSON('/api/admin/charts');
+  document.getElementById('charts-tbody').innerHTML = rows.length
+    ? rows.map(c=>`
+      <tr>
+        <td><strong>${esc(c.title_en)}</strong></td>
+        <td><span class="badge-pub">${esc(c.type||'bar')}</span></td>
+        <td>${(c.data||[]).length}</td>
+        <td>${c.sort_order}</td>
+        <td><div class="td-actions">
+          <button class="act-btn edit" onclick="openChartModal(${c.id})">✏️ Edit</button>
+          <button class="act-btn del" onclick="deleteChart(${c.id})">🗑️</button>
+        </div></td>
+      </tr>`).join('')
+    : '<tr><td colspan="5" class="loading">No charts yet</td></tr>';
+}
+
+function openChartModal(id=null){
+  const mc=document.getElementById('modal-container');
+  mc.innerHTML=`
+  <div class="modal-overlay" id="chart-modal">
+    <div class="modal-box" style="max-width:560px">
+      <button class="modal-close-btn" onclick="closeModal('chart-modal')">✕</button>
+      <h2>${id?'✏️ Edit Chart':'➕ Add Chart'}</h2>
+      <div class="form-grid">
+        <div class="lang-tabs">
+          <button class="lang-tab active" onclick="switchLang(this,'ch','en')">English</button>
+          <button class="lang-tab" onclick="switchLang(this,'ch','ru')">Русский</button>
+          <button class="lang-tab" onclick="switchLang(this,'ch','tj')">Тоҷикӣ</button>
+        </div>
+        <div data-ch-lang="en" class="lang-fields active form-grid">
+          <div class="fg"><label>Title (EN) *</label><input id="ch-title_en" placeholder="📊 My Chart"/></div>
+        </div>
+        <div data-ch-lang="ru" class="lang-fields form-grid">
+          <div class="fg"><label>Title (RU)</label><input id="ch-title_ru"/></div>
+        </div>
+        <div data-ch-lang="tj" class="lang-fields form-grid">
+          <div class="fg"><label>Title (TJ)</label><input id="ch-title_tj"/></div>
+        </div>
+        <div class="form-grid-2">
+          <div class="fg"><label>Type</label>
+            <select id="ch-type">
+              <option value="bar">Bar (столбцы)</option>
+              <option value="line">Line (линия)</option>
+              <option value="doughnut">Doughnut (кольцо)</option>
+            </select>
+          </div>
+          <div class="fg"><label>Unit (e.g. %, km²)</label><input id="ch-unit" placeholder="%"/></div>
+        </div>
+        <div class="fg"><label>Labels — comma separated *</label>
+          <input id="ch-labels" placeholder="2019, 2020, 2021, 2022"/>
+          <small style="color:rgba(255,255,255,.45)">Подписи по оси / сегменты, через запятую</small></div>
+        <div class="fg"><label>Values — comma separated *</label>
+          <input id="ch-data" placeholder="10, 20, 35, 50"/>
+          <small style="color:rgba(255,255,255,.45)">Числа в том же порядке, через запятую</small></div>
+        <div class="form-grid-2">
+          <div class="fg"><label>Base Color (line)</label><input id="ch-color" placeholder="#25C26E"/></div>
+          <div class="fg"><label>Sort Order</label><input type="number" id="ch-sort_order" value="0"/></div>
+        </div>
+        <div class="form-row">
+          <button class="btn-sm btn-outline" onclick="closeModal('chart-modal')">Cancel</button>
+          <button class="btn-sm btn-primary" onclick="saveChart(${id})">💾 Save</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  if(id) apiJSON('/api/admin/charts').then(rows=>{
+    const c=rows.find(r=>r.id===id); if(!c)return;
+    document.getElementById('ch-title_en').value=c.title_en||'';
+    document.getElementById('ch-title_ru').value=c.title_ru||'';
+    document.getElementById('ch-title_tj').value=c.title_tj||'';
+    document.getElementById('ch-type').value=c.type||'bar';
+    document.getElementById('ch-unit').value=c.unit||'';
+    document.getElementById('ch-labels').value=(c.labels||[]).join(', ');
+    document.getElementById('ch-data').value=(c.data||[]).join(', ');
+    document.getElementById('ch-color').value=c.color||'';
+    document.getElementById('ch-sort_order').value=c.sort_order||0;
+  });
+}
+
+async function saveChart(id){
+  const split=s=>String(s||'').split(',').map(x=>x.trim()).filter(x=>x!=='');
+  const data={
+    title_en:document.getElementById('ch-title_en').value,
+    title_ru:document.getElementById('ch-title_ru').value,
+    title_tj:document.getElementById('ch-title_tj').value,
+    type:document.getElementById('ch-type').value,
+    unit:document.getElementById('ch-unit').value,
+    labels:split(document.getElementById('ch-labels').value),
+    data:split(document.getElementById('ch-data').value).map(Number),
+    color:document.getElementById('ch-color').value,
+    sort_order:document.getElementById('ch-sort_order').value
+  };
+  if(!data.title_en){toast('Title (EN) required',true);return;}
+  const r=await api(id?`/api/admin/charts/${id}`:'/api/admin/charts',{method:id?'PUT':'POST',body:JSON.stringify(data)});
+  if(r.ok){toast(id?'Updated!':'Created!');closeModal('chart-modal');loadChartsTable();}
+  else toast('Save failed',true);
+}
+
+async function deleteChart(id){
+  if(!confirm2('Delete this chart?')) return;
+  await api(`/api/admin/charts/${id}`,{method:'DELETE'});
+  toast('Deleted'); loadChartsTable();
 }
 
 // ════════════════════════════════════════

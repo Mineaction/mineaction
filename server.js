@@ -151,6 +151,10 @@ app.get('/api/contacts', wrap(async (req, res) => {
   res.json((await db.find('contacts')).sort((a,b) => a.sort_order - b.sort_order));
 }));
 
+app.get('/api/charts', wrap(async (req, res) => {
+  res.json((await db.find('charts')).sort((a,b) => a.sort_order - b.sort_order));
+}));
+
 // ════════════════════════════════════════════════════════
 //  ADMIN API
 // ════════════════════════════════════════════════════════
@@ -394,6 +398,40 @@ app.put('/api/admin/contacts/:id', authRequired, upload.single('photo'), wrap(as
 }));
 app.delete('/api/admin/contacts/:id', authRequired, wrap(async (req, res) => {
   await db.delete('contacts', req.params.id); res.json({ ok: true });
+}));
+
+// Charts CRUD
+function parseList(v, asNumber) {
+  let arr = v;
+  if (typeof v === 'string') {
+    try { arr = JSON.parse(v); } catch { arr = v.split(',').map(s => s.trim()).filter(s => s !== ''); }
+  }
+  if (!Array.isArray(arr)) arr = [];
+  return asNumber ? arr.map(x => Number(x) || 0) : arr.map(x => String(x));
+}
+app.get('/api/admin/charts', authRequired, wrap(async (req, res) => {
+  res.json((await db.find('charts')).sort((a,b) => a.sort_order - b.sort_order));
+}));
+app.post('/api/admin/charts', authRequired, wrap(async (req, res) => {
+  const d = req.body;
+  const doc = await db.insert('charts', {
+    type:d.type||'bar', title_en:d.title_en||'', title_ru:d.title_ru||'', title_tj:d.title_tj||'',
+    labels:parseList(d.labels,false), data:parseList(d.data,true),
+    unit:d.unit||'', color:d.color||'', sort_order:parseInt(d.sort_order)||0
+  });
+  res.json({ id: doc.id, ok: true });
+}));
+app.put('/api/admin/charts/:id', authRequired, wrap(async (req, res) => {
+  const d = req.body;
+  await db.update('charts', req.params.id, {
+    type:d.type||'bar', title_en:d.title_en||'', title_ru:d.title_ru||'', title_tj:d.title_tj||'',
+    labels:parseList(d.labels,false), data:parseList(d.data,true),
+    unit:d.unit||'', color:d.color||'', sort_order:parseInt(d.sort_order)||0
+  });
+  res.json({ ok: true });
+}));
+app.delete('/api/admin/charts/:id', authRequired, wrap(async (req, res) => {
+  await db.delete('charts', req.params.id); res.json({ ok: true });
 }));
 
 // Image Upload

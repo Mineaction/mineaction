@@ -48,6 +48,7 @@ function setLang(lang) {
   renderRegions();
   buildGalleryGrid(galleryItems, currentCat);
   renderContacts();
+  if (chartsRendered) renderCharts();
 }
 
 // Init language buttons
@@ -232,149 +233,134 @@ if (regSec) regionObs.observe(regSec);
 // ════════════════════════════════════════
 Chart.defaults.color = 'rgba(255,255,255,.65)';
 Chart.defaults.borderColor = 'rgba(255,255,255,.1)';
-let chartsInitialized = false;
+let chartsRendered = false;     // grid has been built at least once
+let chartsData = null;          // raw rows from /api/charts
+let chartInstances = [];        // live Chart.js objects (for destroy on re-render)
 
-function initCharts() {
-  if (chartsInitialized) return;
-  chartsInitialized = true;
+const CHART_TOOLTIP = {
+  backgroundColor:'rgba(10,15,26,.95)', borderColor:'rgba(37,194,110,.3)', borderWidth:1,
+  padding:14, titleColor:'#25C26E', bodyColor:'rgba(255,255,255,.85)',
+  cornerRadius:10, displayColors:true, boxPadding:4
+};
+const CHART_PALETTE = ['#25C26E','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#1FAD60','#2563eb','#d97706'];
 
-  // Animate chart cards in
-  document.querySelectorAll('.chart-card').forEach((card, i) => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(30px)';
-    setTimeout(() => {
-      card.style.transition = 'opacity .6s ease, transform .6s ease';
-      card.style.opacity = '1';
-      card.style.transform = 'none';
-    }, i * 150);
-  });
+function hexToRgba(hex, a) {
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || '');
+  if (!m) return `rgba(37,194,110,${a})`;
+  return `rgba(${parseInt(m[1],16)},${parseInt(m[2],16)},${parseInt(m[3],16)},${a})`;
+}
 
-  // Shared tooltip style
-  const tooltip = {
-    backgroundColor:'rgba(10,15,26,.95)',
-    borderColor:'rgba(37,194,110,.3)',
-    borderWidth:1,
-    padding:14,
-    titleColor:'#25C26E',
-    bodyColor:'rgba(255,255,255,.85)',
-    cornerRadius:10,
-    displayColors:true,
-    boxPadding:4
-  };
+// Build one Chart.js instance from a stored chart row.
+function makeChart(canvas, ch) {
+  const type = ch.type || 'bar';
+  const labels = Array.isArray(ch.labels) ? ch.labels : [];
+  const data = Array.isArray(ch.data) ? ch.data : [];
+  const unit = ch.unit || '';
+  const base = ch.color || CHART_PALETTE[0];
 
-  // ── Chart 1: Line — Mine Incidents ──
-  const ctx1 = $('chartIncidents').getContext('2d');
-  const grad1 = ctx1.createLinearGradient(0, 0, 0, 280);
-  grad1.addColorStop(0,   'rgba(37,194,110,.35)');
-  grad1.addColorStop(0.6, 'rgba(37,194,110,.08)');
-  grad1.addColorStop(1,   'rgba(37,194,110,0)');
-
-  new Chart(ctx1, {
-    type: 'line',
-    data: {
-      labels: ['2018','2019','2020','2021','2022','2023','2024'],
-      datasets: [{ label: tr('nav_stats'), data: [18,15,12,9,7,5,3],
-        borderColor:'#25C26E', backgroundColor: grad1,
-        fill: true, tension: .42, borderWidth: 2.5,
-        pointBackgroundColor:'#25C26E', pointBorderColor:'#fff',
-        pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 9,
-        pointHoverBackgroundColor:'#fff', pointHoverBorderColor:'#25C26E',
-        pointHoverBorderWidth: 3 }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      animation: { duration: 1800, easing: 'easeOutQuart' },
-      plugins: { legend:{display:false}, tooltip },
-      scales: {
-        x: { grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.5)',font:{size:11}} },
-        y: { grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.5)',font:{size:11}}, beginAtZero:true }
-      },
-      interaction: { mode:'index', intersect:false }
-    }
-  });
-
-  // ── Chart 2: Bar — Land Released ──
-  new Chart($('chartLand'), {
-    type: 'bar',
-    data: {
-      labels: ['Sughd','Khatlon','GBAO','RRS'],
-      datasets: [{ label:'km²', data:[92,75,62,31],
-        backgroundColor:['rgba(37,194,110,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)','rgba(239,68,68,.85)'],
-        borderColor:['#1FAD60','#2563eb','#d97706','#dc2626'],
-        borderWidth: 2, borderRadius: 12, borderSkipped: false }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      animation: {
-        duration: 1400, easing: 'easeOutBounce',
-        delay: ctx => ctx.dataIndex * 120
-      },
-      plugins: { legend:{display:false}, tooltip },
-      scales: {
-        x: { grid:{display:false}, ticks:{color:'rgba(255,255,255,.5)'} },
-        y: { grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.5)'}, beginAtZero:true }
+  if (type === 'line') {
+    const ctx = canvas.getContext('2d');
+    const grad = ctx.createLinearGradient(0, 0, 0, 280);
+    grad.addColorStop(0, hexToRgba(base, .35));
+    grad.addColorStop(0.6, hexToRgba(base, .08));
+    grad.addColorStop(1, hexToRgba(base, 0));
+    return new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [{ label: unit || tr('nav_stats'), data,
+        borderColor: base, backgroundColor: grad, fill: true, tension: .42, borderWidth: 2.5,
+        pointBackgroundColor: base, pointBorderColor:'#fff', pointBorderWidth: 2,
+        pointRadius: 5, pointHoverRadius: 9, pointHoverBackgroundColor:'#fff',
+        pointHoverBorderColor: base, pointHoverBorderWidth: 3 }] },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        animation:{ duration:1800, easing:'easeOutQuart' },
+        plugins:{ legend:{display:false}, tooltip:CHART_TOOLTIP },
+        scales:{
+          x:{ grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.5)',font:{size:11}} },
+          y:{ grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.5)',font:{size:11}}, beginAtZero:true }
+        },
+        interaction:{ mode:'index', intersect:false }
       }
-    }
-  });
+    });
+  }
 
-  // ── Chart 3: Bar — MRE Beneficiaries ──
-  new Chart($('chartMRE'), {
-    type: 'bar',
-    data: {
-      labels: ['2019','2020','2021','2022','2023','2024'],
-      datasets: [{ label:'MRE', data:[9500,7200,11000,13400,15800,18200],
-        backgroundColor:['rgba(59,130,246,.8)','rgba(99,102,241,.8)','rgba(139,92,246,.8)',
-                         'rgba(167,139,250,.8)','rgba(37,194,110,.85)','rgba(31,173,96,.85)'],
-        borderColor:['#2563eb','#4f46e5','#7c3aed','#7c3aed','#1FAD60','#198248'],
-        borderWidth: 2, borderRadius: 8, borderSkipped: false }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      animation: {
-        duration: 1600, easing: 'easeOutCubic',
-        delay: ctx => ctx.dataIndex * 100
-      },
-      plugins: { legend:{display:false}, tooltip },
-      scales: {
-        x: { grid:{display:false}, ticks:{color:'rgba(255,255,255,.5)'} },
-        y: { grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.5)'}, beginAtZero:true }
+  if (type === 'doughnut') {
+    const colors = data.map((_, i) => CHART_PALETTE[i % CHART_PALETTE.length]);
+    return new Chart(canvas, {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data, backgroundColor: colors,
+        borderColor:'#1c2a3e', borderWidth:3, hoverOffset:18, hoverBorderColor:'rgba(255,255,255,.3)' }] },
+      options: {
+        responsive:true, maintainAspectRatio:false, cutout:'62%',
+        animation:{ animateRotate:true, animateScale:true, duration:1600, easing:'easeOutQuart' },
+        plugins:{
+          legend:{ position:'right', labels:{ padding:16, font:{size:11}, color:'rgba(255,255,255,.65)',
+            usePointStyle:true, pointStyleWidth:10 } },
+          tooltip:{ ...CHART_TOOLTIP, callbacks:{ label: ctx => ` ${ctx.label}: ${ctx.parsed}${unit || ''}` } }
+        }
       }
-    }
-  });
+    });
+  }
 
-  // ── Chart 4: Doughnut — Donors ──
-  const donorLabels = {
-    en: ['US Dept. of State','OSCE','FSD Switzerland','NPA Norway','ICRC','UNDP','Other'],
-    ru: ['Госдеп США','ОБСЕ','ШФ Швейцария','НПА Норвегия','МККК','ПРООН','Другие'],
-    tj: ['ДД ИМА','СААМ','ФШД Швейтсария','НПА Норвегия','КШББ','БТММ','Дигарон'],
-  };
-  new Chart($('chartDonors'), {
-    type: 'doughnut',
-    data: {
-      labels: donorLabels[currentLang] || donorLabels.en,
-      datasets: [{ data:[28,22,18,14,9,6,3],
-        backgroundColor:['#25C26E','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899'],
-        borderColor:'#1c2a3e', borderWidth:3, hoverOffset:18,
-        hoverBorderColor:'rgba(255,255,255,.3)' }]
-    },
+  // default: bar
+  const colors = data.map((_, i) => hexToRgba(CHART_PALETTE[i % CHART_PALETTE.length], .85));
+  const borders = data.map((_, i) => CHART_PALETTE[i % CHART_PALETTE.length]);
+  return new Chart(canvas, {
+    type: 'bar',
+    data: { labels, datasets: [{ label: unit || '', data,
+      backgroundColor: colors, borderColor: borders, borderWidth: 2, borderRadius: 10, borderSkipped: false }] },
     options: {
-      responsive: true, maintainAspectRatio: false, cutout:'62%',
-      animation: { animateRotate:true, animateScale:true, duration:1600, easing:'easeOutQuart' },
-      plugins: {
-        legend: { position:'right', labels:{ padding:16, font:{size:11}, color:'rgba(255,255,255,.65)',
-          usePointStyle:true, pointStyleWidth:10 } },
-        tooltip: { ...tooltip, callbacks:{
-          label: ctx => ` ${ctx.label}: ${ctx.parsed}%`
-        }}
+      responsive:true, maintainAspectRatio:false,
+      animation:{ duration:1400, easing:'easeOutCubic', delay: ctx => ctx.dataIndex * 110 },
+      plugins:{ legend:{display:false}, tooltip:CHART_TOOLTIP },
+      scales:{
+        x:{ grid:{display:false}, ticks:{color:'rgba(255,255,255,.5)'} },
+        y:{ grid:{color:'rgba(255,255,255,.04)'}, ticks:{color:'rgba(255,255,255,.5)'}, beginAtZero:true }
       }
     }
   });
 }
 
+// (Re)build the whole charts grid from chartsData.
+function renderCharts() {
+  const grid = $('charts-grid');
+  if (!grid || !chartsData) return;
+  chartInstances.forEach(c => { try { c.destroy(); } catch (e) {} });
+  chartInstances = [];
+  grid.innerHTML = '';
+  if (!chartsData.length) { grid.innerHTML = ''; return; }
+  chartsData.forEach((ch, idx) => {
+    const title = ch[`title_${currentLang}`] || ch.title_en || '';
+    const card = document.createElement('div');
+    card.className = 'chart-card';
+    card.innerHTML = `<h3>${title}</h3><div class="chart-wrap"><canvas></canvas></div>`;
+    grid.appendChild(card);
+    chartInstances.push(makeChart(card.querySelector('canvas'), ch));
+    card.style.opacity = '0'; card.style.transform = 'translateY(30px)';
+    setTimeout(() => {
+      card.style.transition = 'opacity .6s ease, transform .6s ease';
+      card.style.opacity = '1'; card.style.transform = 'none';
+    }, idx * 150);
+  });
+  // Charts created before layout settles can size to 0 — force a resize next frame.
+  requestAnimationFrame(() => chartInstances.forEach(c => { try { c.resize(); } catch (e) {} }));
+}
+
+async function initCharts() {
+  if (chartsRendered) return;
+  chartsRendered = true;
+  try { chartsData = await (await fetch('/api/charts')).json(); }
+  catch { chartsData = []; }
+  renderCharts();
+}
+
 const chartsObs = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) initCharts();
-}, { threshold: 0.15 });
+}, { threshold: 0, rootMargin: '0px 0px 250px 0px' });
 chartsObs.observe($('charts'));
+// Fallback: guarantee charts load even if the observer never fires (e.g. tall
+// viewport, no scroll). Lazy animation still plays when scrolled into view.
+window.addEventListener('load', () => setTimeout(() => { if (!chartsRendered) initCharts(); }, 1500));
 
 // ════════════════════════════════════════
 //  DATA RENDERERS

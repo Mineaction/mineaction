@@ -60,7 +60,7 @@ async function loadCollection(table, { keepId = false, pk = 'id' } = {}) {
   // settings keep their natural key
   await loadCollection('settings', { pk: 'key' });
 
-  for (const t of ['users', 'stats', 'regions', 'timeline', 'activities', 'donors', 'news', 'gallery', 'contacts']) {
+  for (const t of ['users', 'stats', 'regions', 'timeline', 'activities', 'donors', 'news', 'gallery', 'contacts', 'charts']) {
     await loadCollection(t);
   }
 

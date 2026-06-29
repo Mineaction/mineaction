@@ -148,6 +148,22 @@ create table if not exists contacts (
   updated_at  timestamptz
 );
 
+-- ── CHARTS (interactive data visualisations) ────────────────────
+create table if not exists charts (
+  id          bigint generated always as identity primary key,
+  type        text default 'bar',          -- line | bar | doughnut
+  title_en    text,
+  title_ru    text,
+  title_tj    text,
+  labels      jsonb default '[]'::jsonb,    -- ["2019","2020", ...]
+  data        jsonb default '[]'::jsonb,    -- [10, 20, ...]
+  unit        text,
+  color       text,
+  sort_order  int default 0,
+  created_at  timestamptz default now(),
+  updated_at  timestamptz
+);
+
 -- ── ROW LEVEL SECURITY ──────────────────────────────────────────
 -- The Node server connects with the service_role key, which BYPASSES RLS.
 -- The browser never talks to Supabase directly (all reads go through the API),
@@ -163,6 +179,7 @@ alter table donors     enable row level security;
 alter table news       enable row level security;
 alter table gallery    enable row level security;
 alter table contacts   enable row level security;
+alter table charts     enable row level security;
 
 -- ── STORAGE BUCKET for images/photos ────────────────────────────
 -- Public bucket so <img> URLs load in the browser. Uploads happen server-side
