@@ -358,9 +358,11 @@ const chartsObs = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) initCharts();
 }, { threshold: 0, rootMargin: '0px 0px 250px 0px' });
 chartsObs.observe($('charts'));
-// Fallback: guarantee charts load even if the observer never fires (e.g. tall
-// viewport, no scroll). Lazy animation still plays when scrolled into view.
-window.addEventListener('load', () => setTimeout(() => { if (!chartsRendered) initCharts(); }, 1500));
+// Fallbacks: guarantee charts load even if the IntersectionObserver never fires
+// (tall viewport, no scroll, some mobile browsers). Multiple triggers, all guarded
+// by chartsRendered so charts are only built once.
+document.addEventListener('DOMContentLoaded', () => setTimeout(() => { if (!chartsRendered) initCharts(); }, 600));
+window.addEventListener('load', () => setTimeout(() => { if (!chartsRendered) initCharts(); }, 1200));
 
 // ════════════════════════════════════════
 //  DATA RENDERERS
