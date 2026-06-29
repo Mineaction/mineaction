@@ -70,7 +70,7 @@ function applySettings(s) {
   const btn2      = s[`hero_btn2_${currentLang}`]  || s.hero_btn2  || tr('hero_btn2_default');
 
   if ($('hero-tag'))   $('hero-tag').textContent   = heroTag;
-  if ($('hero-title')) $('hero-title').innerHTML   = heroTitle;
+  if ($('hero-title')) { $('hero-title').innerHTML = heroTitle; requestAnimationFrame(fitHeroTitle); }
   if ($('hero-sub'))   $('hero-sub').textContent   = heroSub;
   if ($('hero-btn1'))  $('hero-btn1').textContent  = btn1;
   if ($('hero-btn2'))  $('hero-btn2').textContent  = btn2;
@@ -97,6 +97,29 @@ function applySettings(s) {
   if ($('regions-title') && rTitle) $('regions-title').textContent = rTitle;
   if ($('regions-body')  && rBody)  $('regions-body').textContent  = rBody;
 }
+
+// Auto-fit the hero title: shrink the font until it fits its box on any
+// language/length, so long translations never overflow the screen.
+function fitHeroTitle() {
+  const el = document.getElementById('hero-title');
+  const content = document.querySelector('.hero-content');
+  if (!el || !content) return;
+  const avail = window.innerHeight * 0.90; // whole hero block should fit within ~90% of the screen
+  let size = Math.max(Math.min(window.innerWidth * 0.058, 67), 16); // start near the CSS clamp max
+  el.style.fontSize = size + 'px';
+  let guard = 0;
+  while ((content.scrollHeight > avail || el.scrollWidth > el.clientWidth + 1) && size > 16 && guard < 100) {
+    size -= 1;
+    el.style.fontSize = size + 'px';
+    guard++;
+  }
+}
+let _heroFitTO;
+window.addEventListener('resize', () => {
+  clearTimeout(_heroFitTO);
+  _heroFitTO = setTimeout(fitHeroTitle, 120);
+});
+window.addEventListener('load', () => requestAnimationFrame(fitHeroTitle));
 
 // ════════════════════════════════════════
 //  NAVBAR

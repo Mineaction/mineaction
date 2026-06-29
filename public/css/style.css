@@ -103,7 +103,8 @@ nav.scrolled .burger{color:#fff;}
   letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;
   animation:fadeSlideUp .7s ease both .1s;}
 .hero-title{font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:900;line-height:1.12;margin-bottom:1.2rem;
-  color:var(--text);animation:fadeSlideUp .7s ease both .25s;}
+  color:var(--text);animation:fadeSlideUp .7s ease both .25s;
+  overflow-wrap:break-word;word-break:break-word;hyphens:auto;}
 .hero-sub{font-size:1.05rem;color:#4b5563;max-width:600px;margin:0 auto 2.5rem;line-height:1.75;
   animation:fadeSlideUp .7s ease both .4s;}
 .hero-cta{display:inline-flex;gap:1rem;flex-wrap:wrap;justify-content:center;
