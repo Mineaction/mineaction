@@ -1,32 +1,36 @@
 [
   {
-    "id": 1,
+    "id": 17,
     "key": "area_cleared",
     "icon": "🗺️",
-    "value_en": "260",
+    "value_en": "454",
     "label_en": "Total Contaminated Area Cleared (km²)",
     "label_ru": "Всего очищено (км²)",
     "label_tj": "Майдони тозашуда (км²)",
     "badge": "↑ Ongoing clearance",
     "badge_type": "up",
     "color": "#c0392b",
-    "sort_order": 1
+    "sort_order": 1,
+    "created_at": "2026-06-29T17:47:13.451803+00:00",
+    "updated_at": "2026-06-29T18:08:40.585+00:00"
   },
   {
-    "id": 2,
+    "id": 18,
     "key": "mines_destroyed",
     "icon": "💥",
-    "value_en": "316,000",
+    "value_en": "129130",
     "label_en": "Landmines & ERW Destroyed",
     "label_ru": "Мин и ВОП уничтожено",
     "label_tj": "Мина ва ПМА нобуд шуд",
-    "badge": "↑ Since 1999",
+    "badge": "↑ Since 2003",
     "badge_type": "up",
     "color": "#e67e22",
-    "sort_order": 2
+    "sort_order": 2,
+    "created_at": "2026-06-29T17:47:13.451803+00:00",
+    "updated_at": "2026-06-29T18:09:05.715+00:00"
   },
   {
-    "id": 3,
+    "id": 19,
     "key": "org_count",
     "icon": "🦺",
     "value_en": "4",
@@ -36,62 +40,72 @@
     "badge": "FSD · NPA · HDC · UST",
     "badge_type": "up",
     "color": "#27ae60",
-    "sort_order": 3
+    "sort_order": 3,
+    "created_at": "2026-06-29T17:47:13.451803+00:00",
+    "updated_at": null
   },
   {
-    "id": 4,
+    "id": 20,
     "key": "survivors",
     "icon": "👥",
-    "value_en": "1,200+",
+    "value_en": "892",
     "label_en": "Registered Mine Survivors",
     "label_ru": "Зарегистрировано пострадавших",
     "label_tj": "Маъюбони сабтшуда",
     "badge": "↓ Incidents declining",
     "badge_type": "down",
     "color": "#2980b9",
-    "sort_order": 4
+    "sort_order": 4,
+    "created_at": "2026-06-29T17:47:13.451803+00:00",
+    "updated_at": "2026-06-29T18:09:35.668+00:00"
   },
   {
-    "id": 5,
+    "id": 21,
     "key": "mre_trained",
     "icon": "🎓",
-    "value_en": "85,000+",
+    "value_en": "494067",
     "label_en": "People Trained in Mine Risk Education",
     "label_ru": "Обучено минной безопасности",
     "label_tj": "Таълимдидагони МРЕ",
     "badge": "↑ Annual campaigns",
     "badge_type": "up",
     "color": "#8e44ad",
-    "sort_order": 5
+    "sort_order": 5,
+    "created_at": "2026-06-29T17:47:13.451803+00:00",
+    "updated_at": "2026-06-29T18:10:01.987+00:00"
   },
   {
-    "id": 6,
+    "id": 22,
     "key": "years_ops",
     "icon": "📅",
-    "value_en": "25",
+    "value_en": "23",
     "label_en": "Years of Operations (1999–2024)",
     "label_ru": "Лет работы",
     "label_tj": "Соли фаъолият",
     "badge": "↑ Ottawa Treaty",
     "badge_type": "up",
     "color": "#16a085",
-    "sort_order": 6
+    "sort_order": 6,
+    "created_at": "2026-06-29T17:47:13.451803+00:00",
+    "updated_at": "2026-06-29T18:10:10.696+00:00"
   },
   {
-    "id": 7,
+    "id": 23,
     "key": "districts",
     "icon": "🏘️",
-    "value_en": "14",
+    "value_en": "13",
     "label_en": "Mine-Affected Districts",
     "label_ru": "Пострадавших районов",
     "label_tj": "Ноҳияҳои зарардида",
     "badge": "↑ Across 3 regions",
     "badge_type": "up",
     "color": "#d35400",
-    "sort_order": 7
+    "sort_order": 7,
+    "created_at": "2026-06-29T17:47:13.451803+00:00",
+    "updated_at": "2026-06-29T18:10:19.481+00:00"
   },
   {
-    "id": 8,
+    "id": 24,
     "key": "donors_count",
     "icon": "🤝",
     "value_en": "12+",
@@ -101,6 +115,8 @@
     "badge": "↑ OSCE · ICRC · UNDP",
     "badge_type": "up",
     "color": "#c0392b",
-    "sort_order": 8
+    "sort_order": 8,
+    "created_at": "2026-06-29T17:47:13.451803+00:00",
+    "updated_at": null
   }
 ]

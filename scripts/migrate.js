@@ -40,9 +40,18 @@ function read(name) {
   try { return JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { return []; }
 }
 
+const FORCE = process.argv.includes('--force');
+
 async function loadCollection(table, { keepId = false, pk = 'id' } = {}) {
   const rows = read(table);
   if (!rows.length) { console.log(`• ${table}: no data file, skipped`); return; }
+
+  // SAFETY: never wipe a table that already has live data unless --force.
+  const { count } = await sb.from(table).select('*', { count: 'exact', head: true });
+  if (count > 0 && !FORCE) {
+    console.log(`⏭️  ${table}: already has ${count} rows in Supabase — skipped (use --force to overwrite)`);
+    return;
+  }
 
   // clear existing rows
   if (pk === 'key') await sb.from(table).delete().neq('key', '__none__');

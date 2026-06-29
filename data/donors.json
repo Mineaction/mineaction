@@ -1,65 +1,83 @@
 [
   {
-    "id": 1,
-    "name": "🇺🇸 US Department of State",
+    "id": 20,
+    "name": "US Department of State",
     "flag": "🇺🇸",
     "website": "https://www.state.gov/",
-    "sort_order": 1
+    "sort_order": 1,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:58:27.847+00:00"
   },
   {
-    "id": 2,
-    "name": "🌍 OSCE Programme Office",
+    "id": 21,
+    "name": "OSCE Programme Office",
     "flag": "🌍",
     "website": "https://www.osce.org/tajikistan",
-    "sort_order": 2
+    "sort_order": 2,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:58:44.993+00:00"
   },
   {
-    "id": 3,
-    "name": "🔴 ICRC Tajikistan",
+    "id": 22,
+    "name": "ICRC Tajikistan",
     "flag": "🔴",
     "website": "https://www.icrc.org/",
-    "sort_order": 3
+    "sort_order": 3,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:58:51.009+00:00"
   },
   {
-    "id": 4,
-    "name": "🇨🇭 FSD – Swiss Foundation",
+    "id": 23,
+    "name": "FSD – Swiss Foundation",
     "flag": "🇨🇭",
     "website": "https://www.fsd.ch/",
-    "sort_order": 4
+    "sort_order": 4,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:58:38.093+00:00"
   },
   {
-    "id": 5,
-    "name": "🇳🇴 Norwegian People's Aid",
+    "id": 24,
+    "name": "Norwegian People's Aid",
     "flag": "🇳🇴",
     "website": "https://www.npaid.org/",
-    "sort_order": 5
+    "sort_order": 5,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:58:57.643+00:00"
   },
   {
-    "id": 6,
-    "name": "🇺🇳 UNDP Tajikistan",
+    "id": 25,
+    "name": "UNDP Tajikistan",
     "flag": "🇺🇳",
     "website": "https://www.tj.undp.org/",
-    "sort_order": 6
+    "sort_order": 6,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:59:05.797+00:00"
   },
   {
-    "id": 7,
-    "name": "🏥 Red Crescent Tajikistan",
+    "id": 26,
+    "name": "Red Crescent Tajikistan",
     "flag": "🏥",
     "website": "https://redcrescent.tj/",
-    "sort_order": 7
+    "sort_order": 7,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:59:15.861+00:00"
   },
   {
-    "id": 8,
-    "name": "🛡️ HDC – Ministry of Defense",
+    "id": 27,
+    "name": "HDC – Ministry of Defense",
     "flag": "🛡️",
-    "website": "",
-    "sort_order": 8
+    "website": null,
+    "sort_order": 8,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:59:23.923+00:00"
   },
   {
-    "id": 9,
-    "name": "🇹🇯 Union of Sappers of TJ",
+    "id": 28,
+    "name": "Union of Sappers of TJ",
     "flag": "🇹🇯",
-    "website": "",
-    "sort_order": 9
+    "website": null,
+    "sort_order": 9,
+    "created_at": "2026-06-29T17:47:16.124798+00:00",
+    "updated_at": "2026-06-29T17:59:28.809+00:00"
   }
 ]

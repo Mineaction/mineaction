@@ -1,56 +1,68 @@
 [
   {
-    "id": 1,
+    "id": 13,
     "title_en": "Mine Clearance Operations",
     "title_ru": "Операции по разминированию",
     "title_tj": "Амалиётҳои минатозакунӣ",
     "image": "",
     "category": "operations",
-    "sort_order": 1
+    "sort_order": 1,
+    "created_at": "2026-06-29T17:47:17.569514+00:00",
+    "updated_at": null
   },
   {
-    "id": 2,
+    "id": 14,
     "title_en": "Mine Risk Education",
     "title_ru": "Обучение минной безопасности",
     "title_tj": "Таълими бехатарии минаҳо",
     "image": "",
     "category": "mre",
-    "sort_order": 2
+    "sort_order": 2,
+    "created_at": "2026-06-29T17:47:17.569514+00:00",
+    "updated_at": null
   },
   {
-    "id": 3,
+    "id": 15,
     "title_en": "Victim Assistance Programme",
     "title_ru": "Программа помощи пострадавшим",
     "title_tj": "Барномаи кӯмак ба қурбониён",
     "image": "",
     "category": "victims",
-    "sort_order": 3
+    "sort_order": 3,
+    "created_at": "2026-06-29T17:47:17.569514+00:00",
+    "updated_at": null
   },
   {
-    "id": 4,
+    "id": 16,
     "title_en": "Training & Capacity Building",
     "title_ru": "Обучение и развитие потенциала",
     "title_tj": "Омӯзиш ва рушди иқтидор",
     "image": "",
     "category": "training",
-    "sort_order": 4
+    "sort_order": 4,
+    "created_at": "2026-06-29T17:47:17.569514+00:00",
+    "updated_at": null
   },
   {
-    "id": 5,
+    "id": 17,
     "title_en": "International Partners Visit",
     "title_ru": "Визит международных партнёров",
     "title_tj": "Боздиди шарикони байналмилалӣ",
     "image": "",
     "category": "events",
-    "sort_order": 5
+    "sort_order": 5,
+    "created_at": "2026-06-29T17:47:17.569514+00:00",
+    "updated_at": null
   },
   {
-    "id": 6,
+    "id": 18,
     "title_en": "Field Survey Activities",
     "title_ru": "Полевые обследования",
     "title_tj": "Фаъолиятҳои баррасии майдонӣ",
     "image": "",
     "category": "operations",
-    "sort_order": 6
+    "sort_order": 6,
+    "created_at": "2026-06-29T17:47:17.569514+00:00",
+    "updated_at": null
   }
 ]

@@ -5,11 +5,29 @@
     "title_en": "📉 Mine Incidents per Year (2018–2024)",
     "title_ru": "📉 Инциденты с минами по годам (2018–2024)",
     "title_tj": "📉 Ҳодисаҳо бо минаҳо аз рӯи солҳо (2018–2024)",
-    "labels": ["2018", "2019", "2020", "2021", "2022", "2023", "2024"],
-    "data": [18, 15, 12, 9, 7, 5, 3],
+    "labels": [
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024"
+    ],
+    "data": [
+      18,
+      15,
+      12,
+      9,
+      7,
+      5,
+      3
+    ],
     "unit": "",
     "color": "#25C26E",
-    "sort_order": 1
+    "sort_order": 1,
+    "created_at": "2026-06-29T17:47:19.040201+00:00",
+    "updated_at": null
   },
   {
     "id": 2,
@@ -17,11 +35,23 @@
     "title_en": "🗺️ Land Released by Region (km²)",
     "title_ru": "🗺️ Освобождённые земли по регионам (км²)",
     "title_tj": "🗺️ Замини озодшуда аз рӯи минтақаҳо (км²)",
-    "labels": ["Sughd", "Khatlon", "GBAO", "RRS"],
-    "data": [92, 75, 62, 31],
+    "labels": [
+      "Sughd",
+      "Khatlon",
+      "GBAO",
+      "RRS"
+    ],
+    "data": [
+      92,
+      75,
+      62,
+      31
+    ],
     "unit": "km²",
     "color": "#25C26E",
-    "sort_order": 2
+    "sort_order": 2,
+    "created_at": "2026-06-29T17:47:19.040201+00:00",
+    "updated_at": null
   },
   {
     "id": 3,
@@ -29,11 +59,27 @@
     "title_en": "🎓 MRE Beneficiaries by Year",
     "title_ru": "🎓 Охваченные обучением МБО по годам",
     "title_tj": "🎓 Иштирокчиёни МРЕ аз рӯи солҳо",
-    "labels": ["2019", "2020", "2021", "2022", "2023", "2024"],
-    "data": [9500, 7200, 11000, 13400, 15800, 18200],
+    "labels": [
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024"
+    ],
+    "data": [
+      9500,
+      7200,
+      11000,
+      13400,
+      15800,
+      18200
+    ],
     "unit": "",
     "color": "#3b82f6",
-    "sort_order": 3
+    "sort_order": 3,
+    "created_at": "2026-06-29T17:47:19.040201+00:00",
+    "updated_at": null
   },
   {
     "id": 4,
@@ -41,10 +87,28 @@
     "title_en": "💰 Funding by Donor (2024)",
     "title_ru": "💰 Финансирование по донорам (2024)",
     "title_tj": "💰 Маблағгузорӣ аз рӯи донорон (2024)",
-    "labels": ["US Dept. of State", "OSCE", "FSD Switzerland", "NPA Norway", "ICRC", "UNDP", "Other"],
-    "data": [28, 22, 18, 14, 9, 6, 3],
+    "labels": [
+      "US Dept. of State",
+      "OSCE",
+      "FSD Switzerland",
+      "NPA Norway",
+      "ICRC",
+      "UNDP",
+      "Other"
+    ],
+    "data": [
+      28,
+      22,
+      18,
+      14,
+      9,
+      6,
+      3
+    ],
     "unit": "%",
     "color": "#25C26E",
-    "sort_order": 4
+    "sort_order": 4,
+    "created_at": "2026-06-29T17:47:19.040201+00:00",
+    "updated_at": null
   }
 ]

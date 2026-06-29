@@ -1,69 +1,9 @@
 [
   {
-    "key": "site_title",
-    "value": "TNMAC – Tajikistan National Mine Action Centre",
-    "label": "Site Title",
-    "type": "text"
-  },
-  {
-    "key": "hero_tag",
-    "value": "Tajikistan · Mine Action",
-    "label": "Hero Tag",
-    "type": "text"
-  },
-  {
-    "key": "hero_title",
-    "value": "Clearing Mines.<br/>Saving Lives.<br/>Building Peace.",
-    "label": "Hero Title",
-    "type": "html"
-  },
-  {
-    "key": "hero_sub",
-    "value": "Government Institution \"Tajikistan National Mine Action Centre\" — coordinating all humanitarian mine action since 1999 under the Ottawa Treaty.",
-    "label": "Hero Subtitle",
-    "type": "textarea"
-  },
-  {
-    "key": "hero_btn1",
-    "value": "View Statistics",
-    "label": "Hero Button 1",
-    "type": "text"
-  },
-  {
-    "key": "hero_btn2",
-    "value": "Our Work",
-    "label": "Hero Button 2",
-    "type": "text"
-  },
-  {
     "key": "address",
     "value": "Ayni Street 121, 734013 Dushanbe, Tajikistan",
     "label": "Address",
     "type": "text"
-  },
-  {
-    "key": "phone",
-    "value": "(992 37) 227-0947, 221-6687",
-    "label": "Phone",
-    "type": "text"
-  },
-  {
-    "key": "email",
-    "value": "info@tnmac.gov.tj",
-    "label": "Email",
-    "type": "text"
-  },
-  {
-    "key": "nav_badge",
-    "value": "2024 Report",
-    "label": "Nav Badge",
-    "type": "text"
-  },
-  {
-    "key": "color_primary",
-    "value": "#25C26E",
-    "label": "Primary Color",
-    "type": "color"
   },
   {
     "key": "color_dark",
@@ -78,99 +18,159 @@
     "type": "color"
   },
   {
-    "key": "regions_title_en",
-    "value": "Tajikistan's Contaminated Regions",
-    "label": "Regions Title (EN)",
+    "key": "color_primary",
+    "value": "#25C26E",
+    "label": "Primary Color",
+    "type": "color"
+  },
+  {
+    "key": "email",
+    "value": "info@tnmac.gov.tj",
+    "label": "Email",
     "type": "text"
   },
   {
-    "key": "regions_title_ru",
-    "value": "Загрязнённые регионы Таджикистана",
-    "label": "Regions Title (RU)",
+    "key": "hero_btn1",
+    "value": "View Statistics",
+    "label": "Hero Button 1",
     "type": "text"
   },
   {
-    "key": "regions_title_tj",
-    "value": "Минтақаҳои ифлосшудаи Тоҷикистон",
-    "label": "Regions Title (TJ)",
+    "key": "hero_btn1_ru",
+    "value": "Смотреть статистику",
+    "label": "Button 1 (RU)",
+    "type": "text"
+  },
+  {
+    "key": "hero_btn1_tj",
+    "value": "Дидани омор",
+    "label": "Button 1 (TJ)",
+    "type": "text"
+  },
+  {
+    "key": "hero_btn2",
+    "value": "Our Work",
+    "label": "Hero Button 2",
+    "type": "text"
+  },
+  {
+    "key": "hero_btn2_ru",
+    "value": "Наша работа",
+    "label": "Button 2 (RU)",
+    "type": "text"
+  },
+  {
+    "key": "hero_btn2_tj",
+    "value": "Фаъолияти мо",
+    "label": "Button 2 (TJ)",
+    "type": "text"
+  },
+  {
+    "key": "hero_sub",
+    "value": "The state institution \"Tajik National Mine Action Center\" has been implementing humanitarian mine action activities within the framework of the Ottawa Convention since 2003.",
+    "label": "Hero Subtitle",
+    "type": "textarea"
+  },
+  {
+    "key": "hero_sub_ru",
+    "value": "Государственное учреждение «Национальный центр Таджикистана по минным вопросам» осуществляет деятельность в сфере гуманитарного разминирования в рамках Оттавской конвенции с 2003 года.",
+    "label": "Hero Subtitle (RU)",
+    "type": "textarea"
+  },
+  {
+    "key": "hero_sub_tj",
+    "value": "Муассисаи давлатии \"Маркази миллии Тоҷикистон оид ба масъалаҳои минаҳо\" аз соли 2003 то инҷониб фаъолияти башардӯстонаи зидди минаҳоро дар доираи Конверсияи Оттава иҷро мекунад",
+    "label": "Hero Subtitle (TJ)",
+    "type": "textarea"
+  },
+  {
+    "key": "hero_tag",
+    "value": "Tajikistan Humanitarian MA Program",
+    "label": "Hero Tag",
+    "type": "text"
+  },
+  {
+    "key": "hero_tag_ru",
+    "value": "Программа Таджикистана по гуманитарной противоминной деятельности",
+    "label": "Hero Tag (RU)",
+    "type": "text"
+  },
+  {
+    "key": "hero_tag_tj",
+    "value": "Барномаи башардӯстонаи зидди минаҳои Тоҷикистон",
+    "label": "Hero Tag (TJ)",
+    "type": "text"
+  },
+  {
+    "key": "hero_title",
+    "value": "Land release from Explosive ordnance.<br/>Saving Lives.<br/>Building Peace.",
+    "label": "Hero Title",
+    "type": "html"
+  },
+  {
+    "key": "hero_title_ru",
+    "value": "Высвобождение земель от боеприпасов взрывного действия.<br/>Спасаем жизни.<br/>Строим мир.",
+    "label": "Hero Title (RU)",
+    "type": "html"
+  },
+  {
+    "key": "hero_title_tj",
+    "value": "Заминҳоро аз лавозимотҳои тарканда озод месозем.<br/>Ҷонҳоро наҷот медиҳем.<br/>Сулҳ месозем.",
+    "label": "Hero Title (TJ)",
+    "type": "html"
+  },
+  {
+    "key": "nav_badge",
+    "value": "2024 Report",
+    "label": "Nav Badge",
+    "type": "text"
+  },
+  {
+    "key": "phone",
+    "value": "(992 37) 227-0947, 221-6687",
+    "label": "Phone",
     "type": "text"
   },
   {
     "key": "regions_body_en",
-    "value": "Tajikistan shares borders with Afghanistan, Uzbekistan, Kyrgyzstan, and China. The majority of contamination is concentrated along the former conflict zones in Sughd and Khatlon regions, particularly near the Uzbek and Afghan borders.",
+    "value": "Khatlon, RRS, GBAO",
     "label": "Regions Body (EN)",
     "type": "textarea"
   },
   {
     "key": "regions_body_ru",
-    "value": "Таджикистан граничит с Афганистаном, Узбекистаном, Кыргызстаном и Китаем. Основная часть загрязнения сосредоточена вдоль бывших зон конфликта в Сугдской и Хатлонской областях.",
+    "value": "Хатлонская область, РРП, ГБАО",
     "label": "Regions Body (RU)",
     "type": "textarea"
   },
   {
     "key": "regions_body_tj",
-    "value": "Тоҷикистон бо Афғонистон, Ӯзбекистон, Қирғизистон ва Чин ҳамсарҳад аст. Қисми асосии ифлосшавӣ дар минтақаҳои Суғд ва Хатлон мутамарказ шудааст.",
+    "value": "Вилояти Хатлон, НТҶ, ВМКБ",
     "label": "Regions Body (TJ)",
     "type": "textarea"
   },
   {
-    "label": "Hero Title (RU)",
-    "key": "hero_title_ru",
-    "type": "html",
-    "value": "Разминируем.<br/>Спасаем жизни.<br/>Строим мир."
+    "key": "regions_title_en",
+    "value": "Explosive Ordnance Hazards Map",
+    "label": "Regions Title (EN)",
+    "type": "text"
   },
   {
-    "label": "Hero Title (TJ)",
-    "key": "hero_title_tj",
-    "type": "html",
-    "value": "Минаҳоро тоза мекунем.<br/>Ҷонҳоро наҷот медиҳем.<br/>Сулҳ месозем."
+    "key": "regions_title_ru",
+    "value": "Опасность от БВП по региону",
+    "label": "Regions Title (RU)",
+    "type": "text"
   },
   {
-    "label": "Hero Subtitle (RU)",
-    "key": "hero_sub_ru",
-    "type": "textarea",
-    "value": "Государственное учреждение \"Таджикский национальный центр по разминированию\" — координирует все гуманитарные операции по разминированию с 1999 года в рамках Оттавского договора."
+    "key": "regions_title_tj",
+    "value": "Хатари лавозимоти тарканда аз рӯи харита",
+    "label": "Regions Title (TJ)",
+    "type": "text"
   },
   {
-    "label": "Hero Subtitle (TJ)",
-    "key": "hero_sub_tj",
-    "type": "textarea",
-    "value": "Муассисаи давлатии \"Маркази давлатии минатозакунии Тоҷикистон\" — аз соли 1999 инҷониб ҳамаи амалиётҳои гуманитарии минатозакуниро дар доираи Шартномаи Оттава ҳамоҳанг мекунад."
-  },
-  {
-    "label": "Hero Tag (RU)",
-    "key": "hero_tag_ru",
-    "type": "text",
-    "value": "Таджикистан · Разминирование"
-  },
-  {
-    "label": "Hero Tag (TJ)",
-    "key": "hero_tag_tj",
-    "type": "text",
-    "value": "Тоҷикистон · амалиёти зидди минаҳо"
-  },
-  {
-    "label": "Button 1 (RU)",
-    "key": "hero_btn1_ru",
-    "type": "text",
-    "value": "Смотреть статистику"
-  },
-  {
-    "label": "Button 1 (TJ)",
-    "key": "hero_btn1_tj",
-    "type": "text",
-    "value": "Дидани омор"
-  },
-  {
-    "label": "Button 2 (RU)",
-    "key": "hero_btn2_ru",
-    "type": "text",
-    "value": "Наша работа"
-  },
-  {
-    "label": "Button 2 (TJ)",
-    "key": "hero_btn2_tj",
-    "type": "text",
-    "value": "Кори мо"
+    "key": "site_title",
+    "value": "TNMAC – Tajikistan National Mine Action Centre",
+    "label": "Site Title",
+    "type": "text"
   }
 ]

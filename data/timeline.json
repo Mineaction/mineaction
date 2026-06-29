@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": 15,
     "year": "1997",
     "title_en": "Ottawa Convention Signed",
     "title_ru": "Подписание Оттавской конвенции",
@@ -8,10 +8,12 @@
     "body_en": "The Convention on the Prohibition of Anti-Personnel Mines was signed on 18 September 1997. Tajikistan acceded in October 1999.",
     "body_ru": "Конвенция о запрете противопехотных мин подписана 18 сентября 1997 года. Таджикистан присоединился в октябре 1999 года.",
     "body_tj": "Конвенсия дар бораи манъи минаҳои зидди шахсӣ 18 сентябри 1997 имзо шуд.",
-    "sort_order": 1
+    "sort_order": 1,
+    "created_at": "2026-06-29T17:47:14.757123+00:00",
+    "updated_at": null
   },
   {
-    "id": 2,
+    "id": 16,
     "year": "2000",
     "title_en": "Tajikistan Joins Ottawa Treaty",
     "title_ru": "Таджикистан присоединился к Оттавскому договору",
@@ -19,10 +21,12 @@
     "body_en": "Tajikistan became a State Party on 1 April 2000, committing to mine clearance, victim assistance, and stockpile destruction.",
     "body_ru": "Таджикистан стал государством-участником 1 апреля 2000 года.",
     "body_tj": "Тоҷикистон 1 апрели 2000 узви давлатӣ шуд.",
-    "sort_order": 2
+    "sort_order": 2,
+    "created_at": "2026-06-29T17:47:14.757123+00:00",
+    "updated_at": null
   },
   {
-    "id": 3,
+    "id": 17,
     "year": "2004",
     "title_en": "First Review Conference",
     "title_ru": "Первая обзорная конференция",
@@ -30,10 +34,12 @@
     "body_en": "At the Nairobi Summit, Tajikistan reported responsibility for significant numbers of landmine survivors and received international support.",
     "body_ru": "На Найробийском саммите Таджикистан сообщил о значительном числе выживших жертв мин.",
     "body_tj": "Дар саммити Найробӣ Тоҷикистон дар бораи шумораи зиёди бозмондагони минаҳо гузориш дод.",
-    "sort_order": 3
+    "sort_order": 3,
+    "created_at": "2026-06-29T17:47:14.757123+00:00",
+    "updated_at": null
   },
   {
-    "id": 4,
+    "id": 18,
     "year": "2014",
     "title_en": "TNMAC Formally Established",
     "title_ru": "Официальное создание ГКРМТТ",
@@ -41,10 +47,12 @@
     "body_en": "The Government Institution \"Tajikistan National Mine Action Center\" was established by Government Decree #24 on 3 January 2014.",
     "body_ru": "Государственное учреждение \"Таджикский национальный центр по разминированию\" создано постановлением правительства №24 от 3 января 2014 года.",
     "body_tj": "Муассисаи давлатии \"Маркази давлатии минатозакунии Тоҷикистон\" бо Қарори Ҳукумат №24 таъсис ёфт.",
-    "sort_order": 4
+    "sort_order": 4,
+    "created_at": "2026-06-29T17:47:14.757123+00:00",
+    "updated_at": null
   },
   {
-    "id": 5,
+    "id": 19,
     "year": "2017",
     "title_en": "National Strategy 2017–2020",
     "title_ru": "Национальная стратегия 2017–2020",
@@ -52,10 +60,12 @@
     "body_en": "Adoption of the National Strategy of the Republic of Tajikistan for Humanitarian Mine Action covering clearance, MRE, and victim assistance.",
     "body_ru": "Принятие Национальной стратегии Республики Таджикистан по гуманитарному разминированию.",
     "body_tj": "Қабули Стратегияи миллии Ҷумҳурии Тоҷикистон оид ба амалиётҳои гуманитарии минатозакунӣ.",
-    "sort_order": 5
+    "sort_order": 5,
+    "created_at": "2026-06-29T17:47:14.757123+00:00",
+    "updated_at": null
   },
   {
-    "id": 6,
+    "id": 20,
     "year": "2021",
     "title_en": "National Strategy 2021–2030",
     "title_ru": "Национальная стратегия 2021–2030",
@@ -63,10 +73,12 @@
     "body_en": "New 10-year national strategy launched, aligned with the Oslo Action Plan. Tajikistan aims to be mine-free by 2030.",
     "body_ru": "Новая 10-летняя национальная стратегия. Таджикистан стремится стать свободным от мин к 2030 году.",
     "body_tj": "Стратегияи нави 10-солаи миллӣ. Тоҷикистон мехоҳад то соли 2030 аз мин озод шавад.",
-    "sort_order": 6
+    "sort_order": 6,
+    "created_at": "2026-06-29T17:47:14.757123+00:00",
+    "updated_at": null
   },
   {
-    "id": 7,
+    "id": 21,
     "year": "2024",
     "title_en": "International Mine Awareness Day",
     "title_ru": "Международный день осведомлённости о минной опасности",
@@ -74,6 +86,8 @@
     "body_en": "Major event held at Central Stadium, Shamsiddin Shohin district, attended by OSCE, ICRC, US Dept. of State, NPA, FSD and 800+ locals.",
     "body_ru": "Крупное мероприятие на Центральном стадионе с участием ОБСЕ, МККК, Госдепа США и более 800 местных жителей.",
     "body_tj": "Чорабинии бузург дар Варзишгоҳи марказӣ бо иштироки СААМ, КШББ, ДД ИМА ва зиёда аз 800 сокинон.",
-    "sort_order": 7
+    "sort_order": 7,
+    "created_at": "2026-06-29T17:47:14.757123+00:00",
+    "updated_at": null
   }
 ]
