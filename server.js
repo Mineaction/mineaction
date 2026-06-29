@@ -94,6 +94,18 @@ app.delete('/api/admin/users/:id', authRequired, superadminOnly, wrap(async (req
 // ════════════════════════════════════════════════════════
 //  PUBLIC API
 // ════════════════════════════════════════════════════════
+// Health/diagnostics — reports the active storage mode without exposing secrets.
+app.get('/api/health', (req, res) => {
+  res.json({
+    ok: true,
+    mode: db.isSupabase ? 'supabase' : 'json',
+    supabase_url_set: !!process.env.SUPABASE_URL,
+    service_key_set: !!process.env.SUPABASE_SERVICE_KEY,
+    bucket: process.env.SUPABASE_BUCKET || 'media',
+    time: new Date().toISOString()
+  });
+});
+
 app.get('/api/settings', wrap(async (req, res) => res.json(await db.getAllSettings())));
 
 app.get('/api/stats', wrap(async (req, res) => {
