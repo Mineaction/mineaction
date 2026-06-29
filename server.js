@@ -361,8 +361,10 @@ app.post('/api/admin/contacts', authRequired, upload.single('photo'), wrap(async
   const d = req.body;
   const photo = req.file ? await persistFile(req.file) : (d.photo || '');
   const doc = await db.insert('contacts', {
-    name:d.name||'', title_en:d.title_en||'', title_ru:d.title_ru||'', title_tj:d.title_tj||'',
-    phone:d.phone||'', email:d.email||'', photo, sort_order:parseInt(d.sort_order)||0
+    name:d.name||'', name_en:d.name_en||'', title_en:d.title_en||'', title_ru:d.title_ru||'', title_tj:d.title_tj||'',
+    phone:d.phone||'', email:d.email||'', photo,
+    level:parseInt(d.level)||1, parent_id:d.parent_id?parseInt(d.parent_id):null,
+    sort_order:parseInt(d.sort_order)||0
   });
   res.json({ id: doc.id, ok: true });
 }));
@@ -371,8 +373,10 @@ app.put('/api/admin/contacts/:id', authRequired, upload.single('photo'), wrap(as
   const existing = await db.findById('contacts', req.params.id);
   const photo = req.file ? await persistFile(req.file) : (d.photo || existing?.photo || '');
   await db.update('contacts', req.params.id, {
-    name:d.name||'', title_en:d.title_en||'', title_ru:d.title_ru||'', title_tj:d.title_tj||'',
-    phone:d.phone||'', email:d.email||'', photo, sort_order:parseInt(d.sort_order)||0
+    name:d.name||'', name_en:d.name_en||'', title_en:d.title_en||'', title_ru:d.title_ru||'', title_tj:d.title_tj||'',
+    phone:d.phone||'', email:d.email||'', photo,
+    level:parseInt(d.level)||1, parent_id:d.parent_id?parseInt(d.parent_id):null,
+    sort_order:parseInt(d.sort_order)||0
   });
   res.json({ ok: true });
 }));

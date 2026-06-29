@@ -134,12 +134,15 @@ create table if not exists gallery (
 create table if not exists contacts (
   id          bigint generated always as identity primary key,
   name        text,
+  name_en     text,
   title_en    text,
   title_ru    text,
   title_tj    text,
   phone       text,
   email       text,
   photo       text,
+  level       int default 1,
+  parent_id   bigint,
   sort_order  int default 0,
   created_at  timestamptz default now(),
   updated_at  timestamptz
